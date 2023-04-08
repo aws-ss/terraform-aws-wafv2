@@ -1,0 +1,30 @@
+name: semantic-release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.tf'
+      - '.github/workflows/release.yml'
+
+jobs:
+  release:
+    name: semantic-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: semantic-release
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          extra_plugins: |
+              @semantic-release/changelog@6.0.0
+              @semantic-release/git@10.0.0
+              conventional-changelog-conventionalcommits@4.6.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
