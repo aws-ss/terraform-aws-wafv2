@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.0.0...v1.1.0) (2023-04-10)
+
+
+### Features
+
+* Support for create IPSet ([fbd015b](https://github.com/aws-ss/terraform-aws-wafv2/commit/fbd015bc2a3f642be96337f78e2343dca0b83fea))
+
 ## 1.0.0 (2023-04-09)
 
 
