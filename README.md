@@ -4,19 +4,22 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 
 ## Available Features
 
-- AndStatement
-- ByteMatchStatement
-- GeoMatchStatement
-- IPSetReferenceStatement
-- LabelMatchStatement
-- ManagedRuleGroupStatement
-- NotStatement
-- OrStatement
-- RateBasedStatement
-- RegexPatternSetStatement
-- SizeConstraintStatement
-- SqliMatchStatement
-- XssMatchStatement
+- Associate WebACL with one (ALB, API Gateway, Cognito User Pool)
+- Create IPSets
+- Statements
+  - AndStatement
+  - ByteMatchStatement
+  - GeoMatchStatement
+  - IPSetReferenceStatement
+  - LabelMatchStatement
+  - ManagedRuleGroupStatement
+  - NotStatement
+  - OrStatement
+  - RateBasedStatement
+  - RegexPatternSetStatement
+  - SizeConstraintStatement
+  - SqliMatchStatement
+  - XssMatchStatement
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
