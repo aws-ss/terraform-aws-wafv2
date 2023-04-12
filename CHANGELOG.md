@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.2.0...v1.3.0) (2023-04-12)
+
+
+### Features
+
+* Support create Rule Group resource. ([c9ee3e4](https://github.com/aws-ss/terraform-aws-wafv2/commit/c9ee3e4e5c8d211e865b20cc9482b8ff632df4f7))
+
 ## [1.2.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.1.0...v1.2.0) (2023-04-12)
 
 
