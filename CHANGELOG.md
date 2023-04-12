@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.1.0...v1.2.0) (2023-04-12)
+
+
+### Features
+
+* Support WebACL association ([dc0e369](https://github.com/aws-ss/terraform-aws-wafv2/commit/dc0e369f20f1079045696ded3ee48f228793b895))
+
 ## [1.1.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.0.0...v1.1.0) (2023-04-10)
 
 
