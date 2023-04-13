@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.3.0...v1.4.0) (2023-04-13)
+
+
+### Features
+
+* Support logging configuration ([15399f2](https://github.com/aws-ss/terraform-aws-wafv2/commit/15399f2cf057524edd8ef7fa215aca9839834833))
+
 ## [1.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.2.0...v1.3.0) (2023-04-12)
 
 
