@@ -24,6 +24,10 @@ A Terraform module that creates Web Application Firewall (WAFV2).
   - SqliMatchStatement
   - XssMatchStatement
 
+## Examples
+
+- See [Example Codes](https://github.com/aws-ss/terraform-aws-wafv2/tree/main/examples) for full details.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
