@@ -7,6 +7,7 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 - Associate WebACL with one (ALB, API Gateway, Cognito User Pool)
 - Create IPSets
 - Create a WAFv2 Rule Group resource
+- Custom Response Body
 - Logging Configuration
 - Statements
   - AndStatement
