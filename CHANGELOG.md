@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.4.0...v1.5.0) (2023-05-31)
+
+
+### Features
+
+* Support custom response when the blocked ([7d4df68](https://github.com/aws-ss/terraform-aws-wafv2/commit/7d4df68c2b649e4bf4b5b6537fef48383e0aba0a))
+
 ## [1.4.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.3.0...v1.4.0) (2023-04-13)
 
 
