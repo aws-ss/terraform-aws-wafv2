@@ -40,7 +40,7 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.51.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.62.0 |
 
 ## Modules
 
@@ -56,6 +56,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_custom_response_body"></a> [custom\_response\_body](#input\_custom\_response\_body) | (Optional) Defines custom response bodies that can be referenced by custom\_response actions. | `map(any)` | `{}` | no |
 | <a name="input_default_action"></a> [default\_action](#input\_default\_action) | (Required) Action to perform if none of the rules contained in the WebACL match. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | (Optional) Friendly description of the WebACL. | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Friendly name of the WebACL. | `string` | n/a | yes |
