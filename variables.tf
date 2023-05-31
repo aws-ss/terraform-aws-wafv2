@@ -24,6 +24,12 @@ variable "visibility_config" {
   type        = map(string)
 }
 
+variable "custom_response_body" {
+  description = "(Optional) Defines custom response bodies that can be referenced by custom_response actions."
+  type        = map(any)
+  default     = {}
+}
+
 variable "rule" {
   description = "(Optional) Rule blocks used to identify the web requests that you want to allow, block, or count."
   type        = any

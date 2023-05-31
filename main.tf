@@ -34,7 +34,23 @@ resource "aws_wafv2_web_acl" "this" {
           }
           dynamic "block" {
             for_each = action.value == "block" ? [1] : []
-            content {}
+            content {
+              dynamic "custom_response" {
+                for_each = lookup(rule.value, "custom_response", null) == null ? [] : [lookup(rule.value, "custom_response")]
+                content {
+                  custom_response_body_key = lookup(custom_response.value, "custom_response_body_key", null)
+                  response_code            = lookup(custom_response.value, "response_code", 403)
+
+                  dynamic "response_header" {
+                    for_each = lookup(custom_response.value, "response_header", [])
+                    content {
+                      name  = lookup(response_header.value, "name")
+                      value = lookup(response_header.value, "value")
+                    }
+                  }
+                }
+              }
+            }
           }
           dynamic "count" {
             for_each = action.value == "count" ? [1] : []
@@ -3787,13 +3803,13 @@ resource "aws_wafv2_web_acl" "this" {
           content {
             arn = lookup(rule_group_reference_statement.value, "arn")
 
-            dynamic "excluded_rule" {
-              for_each = lookup(rule_group_reference_statement.value, "excluded_rule", null) == null ? [] : [lookup(rule_group_reference_statement.value, "excluded_rule")]
-              iterator = excluded_rule
-              content {
-                name = lookup(excluded_rule.value, "name")
-              }
-            }
+            #            dynamic "excluded_rule" {
+            #              for_each = lookup(rule_group_reference_statement.value, "excluded_rule", null) == null ? [] : [lookup(rule_group_reference_statement.value, "excluded_rule")]
+            #              iterator = excluded_rule
+            #              content {
+            #                name = lookup(excluded_rule.value, "name")
+            #              }
+            #            }
           }
         }
       }
@@ -3806,6 +3822,15 @@ resource "aws_wafv2_web_acl" "this" {
           sampled_requests_enabled   = lookup(visibility_config.value, "sampled_requests_enabled")
         }
       }
+    }
+  }
+
+  dynamic "custom_response_body" {
+    for_each = var.custom_response_body
+    content {
+      content      = var.custom_response_body.content
+      content_type = var.custom_response_body.content_type
+      key          = var.custom_response_body.key
     }
   }
 
