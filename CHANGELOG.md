@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.5.0...v2.0.0) (2023-07-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Merging modules
+
+### Features
+
+* Merging modules ([1e1dff4](https://github.com/aws-ss/terraform-aws-wafv2/commit/1e1dff43e600d4206b6d3a2c211250a3b79a46ea))
+
 ## [1.5.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.4.0...v1.5.0) (2023-05-31)
 
 
