@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [2.0.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.0.0...v2.0.1) (2023-07-15)
+
+
+### Bug Fixes
+
+* attributes must be accessed on specific instances ([12ddd40](https://github.com/aws-ss/terraform-aws-wafv2/commit/12ddd40fdf90066c83a036a18b227f0f793bda0d))
+
 ## [2.0.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v1.5.0...v2.0.0) (2023-07-15)
 
 
