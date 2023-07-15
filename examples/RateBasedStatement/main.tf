@@ -5,6 +5,11 @@ provider "aws" {
 module "wafv2" {
   source = "../..//"
 
+  enabled_web_acl_association = true
+  resource_arn                = []
+
+  enabled_logging_configuration = false
+
   name           = "WebACL01"
   scope          = "REGIONAL"
   default_action = "block"

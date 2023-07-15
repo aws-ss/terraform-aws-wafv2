@@ -3,10 +3,13 @@ provider "aws" {
 }
 
 module "logging_configuration" {
-  source = "../../modules/logging-configuration//"
+  source = "../..//"
 
-  log_destination_configs = ""
-  resource_arn            = ""
+  enabled_web_acl_association = true
+  resource_arn                = []
+
+  enabled_logging_configuration = true
+  log_destination_configs       = ""
   redacted_fields = {
     uri_path = {}
   }
@@ -35,5 +38,46 @@ module "logging_configuration" {
         ]
       }
     ]
+  }
+
+  name           = "WebACL01"
+  scope          = "REGIONAL"
+  default_action = "block"
+  rule = [
+    {
+      name     = "Rule01"
+      priority = 10
+      action   = "count"
+      geo_match_statement = {
+        country_codes : ["CN", "US"]
+      }
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "cloudwatch_metric_name"
+        sampled_requests_enabled   = false
+      }
+    },
+    {
+      name     = "Rule02"
+      priority = 20
+      action   = "block"
+      geo_match_statement = {
+        country_codes : ["AE"]
+      }
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "cloudwatch_metric_name"
+        sampled_requests_enabled   = false
+      }
+    }
+  ]
+  visibility_config = {
+    cloudwatch_metrics_enabled = false
+    metric_name                = "cloudwatch_metric_name"
+    sampled_requests_enabled   = false
+  }
+  tags = {
+    Team : "Security"
+    Owner : "Security"
   }
 }
