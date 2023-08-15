@@ -7274,22 +7274,34 @@ resource "aws_wafv2_web_acl" "this" {
           content {
             arn = lookup(rule_group_reference_statement.value, "arn")
 
-            #            dynamic "rule_action_override" {
-            #              for_each = lookup(rule_group_reference_statement.value, "rule_action_override", null) == null ? [] : [lookup(rule_group_reference_statement.value, "rule_action_override")]
-            #              content {
-            #                name = lookup(rule_action_override.value, "name")
-            #
-            #                dynamic "action_to_use" {
-            #                  for_each = lookup(rule_action_override.value, "action_to_use", null) == null ? [] : lookup(rule_action_override.value, "action_to_use")
-            #                  content {
-            #                    dynamic "count" {
-            #                      for_each = action_to_use.value == "count" ? [1] : []
-            #                      content {}
-            #                    }
-            #                  }
-            #                }
-            #              }
-            #            }
+            dynamic "rule_action_override" {
+              for_each = lookup(rule_group_reference_statement.value, "rule_action_override", null) == null ? [] : [lookup(rule_group_reference_statement.value, "rule_action_override")]
+              content {
+                name = lookup(rule_action_override.value, "name")
+
+                dynamic "action_to_use" {
+                  for_each = lookup(rule_action_override.value, "action_to_use", null) == null ? [] : [lookup(rule_action_override.value, "action_to_use")]
+                  content {
+                    dynamic "allow" {
+                      for_each = action_to_use.value == "allow" ? [1] : []
+                      content {}
+                    }
+                    dynamic "block" {
+                      for_each = action_to_use.value == "block" ? [1] : []
+                      content {}
+                    }
+                    dynamic "captcha" {
+                      for_each = action_to_use.value == "captcha" ? [1] : []
+                      content {}
+                    }
+                    dynamic "count" {
+                      for_each = action_to_use.value == "count" ? [1] : []
+                      content {}
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
