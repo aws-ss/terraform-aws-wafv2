@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.0.1...v2.1.0) (2023-08-15)
+
+
+### Features
+
+* Configure multiple "text_transformation" ([c607cd1](https://github.com/aws-ss/terraform-aws-wafv2/commit/c607cd1f611a70f0dff266edd8be247de59eba67))
+
 ### [2.0.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.0.0...v2.0.1) (2023-07-15)
 
 
