@@ -29,7 +29,7 @@ module "wafv2" {
             geo_match_statement = {
               country_codes = ["CN"]
             }
-          },
+          }
         ]
       }
       visibility_config = {

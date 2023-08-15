@@ -25,10 +25,12 @@ module "wafv2" {
           }
         }
         arn = "arn:aws:wafv2:ap-northeast-2:362252864672:regional/regexpatternset/test/8356a9ba-8236-459d-8684-3b5a01091cb7"
-        text_transformation = {
-          priority = 10
-          type     = "LOWERCASE"
-        }
+        text_transformation = [
+          {
+            priority = 10
+            type     = "LOWERCASE"
+          }
+        ]
       }
       visibility_config = {
         cloudwatch_metrics_enabled = false

@@ -21,10 +21,12 @@ module "rule_group" {
         }
         comparison_operator = "EQ"
         size                = 0
-        text_transformation = {
-          priority = 20
-          type     = "NONE"
-        }
+        text_transformation = [
+          {
+            priority = 20
+            type     = "NONE"
+          }
+        ]
       }
       visibility_config = {
         cloudwatch_metrics_enabled = false

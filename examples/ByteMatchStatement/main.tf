@@ -26,10 +26,12 @@ module "wafv2" {
         }
         positional_constraint = "EXACTLY"
         search_string         = "test"
-        text_transformation = {
-          priority = 20
-          type     = "NONE"
-        }
+        text_transformation = [
+          {
+            priority = 20
+            type     = "NONE"
+          }
+        ]
       }
       visibility_config = {
         cloudwatch_metrics_enabled = false
