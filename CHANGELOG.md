@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.1.0...v2.2.0) (2023-08-15)
+
+
+### Features
+
+* Add 'rule_action_override' field ([a072971](https://github.com/aws-ss/terraform-aws-wafv2/commit/a0729710c1b1921d125a827541b91c1d8091cac0))
+
 ## [2.1.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.0.1...v2.1.0) (2023-08-15)
 
 
