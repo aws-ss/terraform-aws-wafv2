@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.2.0...v2.3.0) (2023-08-26)
+
+
+### Features
+
+* Add contents for 'FieldToMatch' ([a4531e3](https://github.com/aws-ss/terraform-aws-wafv2/commit/a4531e395c91512f6571123ae5c4740c09a603b5))
+
 ## [2.2.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.1.0...v2.2.0) (2023-08-15)
 
 
