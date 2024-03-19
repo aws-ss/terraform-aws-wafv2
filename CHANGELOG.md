@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.3.0...v3.0.0) (2024-03-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update logical rule statements
+
+### Features
+
+* Update logical rule statements ([0d81ff8](https://github.com/aws-ss/terraform-aws-wafv2/commit/0d81ff8e90c03216af8e6566de0949cdafb5b5f3))
+
 ## [2.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.2.0...v2.3.0) (2023-08-26)
 
 
