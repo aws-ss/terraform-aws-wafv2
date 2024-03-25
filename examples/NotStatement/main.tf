@@ -19,13 +19,9 @@ module "wafv2" {
       priority = 10
       action   = "count"
       not_statement = {
-        statements = [
-          {
-            geo_match_statement = {
-              country_codes = ["AF"]
-            }
-          }
-        ]
+        geo_match_statement = {
+          country_codes = ["AF"]
+        }
       }
       visibility_config = {
         cloudwatch_metrics_enabled = false

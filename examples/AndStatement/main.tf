@@ -21,13 +21,35 @@ module "wafv2" {
       and_statement = {
         statements = [
           {
-            geo_match_statement = {
-              country_codes = ["AF"]
+            not_statement = {
+              byte_match_statement = {
+                field_to_match = {
+                  uri_path = {}
+                }
+                positional_constraint = "CONTAINS"
+                search_string         = "/admin"
+                text_transformation = [
+                  {
+                    priority = 0
+                    type     = "LOWERCASE"
+                  }
+                ]
+              }
             }
           },
           {
-            geo_match_statement = {
-              country_codes = ["CN"]
+            byte_match_statement = {
+              field_to_match = {
+                uri_path = {}
+              }
+              positional_constraint = "CONTAINS"
+              search_string         = "/administrator"
+              text_transformation = [
+                {
+                  priority = 0
+                  type     = "LOWERCASE"
+                }
+              ]
             }
           }
         ]
