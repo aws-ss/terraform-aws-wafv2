@@ -33,6 +33,13 @@ resource "aws_wafv2_rule_group" "this" {
         }
       }
 
+      dynamic "rule_label" {
+        for_each = lookup(rule.value, "rule_label", null) == null ? [] : [lookup(rule.value, "rule_label")]
+        content {
+          name = lookup(rule.value, "rule_label")
+        }
+      }
+
       statement {
         dynamic "ip_set_reference_statement" {
           for_each = lookup(rule.value, "ip_set_reference_statement", null) == null ? [] : [lookup(rule.value, "ip_set_reference_statement")]
