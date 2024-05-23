@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.0.0...v3.1.0) (2024-05-23)
+
+
+### Features
+
+* Support 'rule_label' arguments in aws_wafv2_rule_group ([468b2ca](https://github.com/aws-ss/terraform-aws-wafv2/commit/468b2ca7774f7b37317677c01686dee7634b10c4))
+
 ## [3.0.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v2.3.0...v3.0.0) (2024-03-19)
 
 
