@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.1.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.1.0...v3.1.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* Syntax to search for 'rule_label' value name ([112c566](https://github.com/aws-ss/terraform-aws-wafv2/commit/112c56698866d21bfcbb67f2a2c3dcb5b93354fe))
+
 ## [3.1.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.0.0...v3.1.0) (2024-05-23)
 
 
