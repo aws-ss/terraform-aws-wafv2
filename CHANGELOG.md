@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.1.1...v3.2.0) (2024-07-31)
+
+
+### Features
+
+* Add 'ip_set_forwarded_ip_config' argument in ip_set_reference_statement ([69a5bac](https://github.com/aws-ss/terraform-aws-wafv2/commit/69a5bac3fda1c305209f4d2eb5abd01f78c560eb))
+
 ### [3.1.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.1.0...v3.1.1) (2024-05-23)
 
 
