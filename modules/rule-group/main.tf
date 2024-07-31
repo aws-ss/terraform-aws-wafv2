@@ -45,6 +45,15 @@ resource "aws_wafv2_rule_group" "this" {
           for_each = lookup(rule.value, "ip_set_reference_statement", null) == null ? [] : [lookup(rule.value, "ip_set_reference_statement")]
           content {
             arn = lookup(ip_set_reference_statement.value, "arn")
+
+            dynamic "ip_set_forwarded_ip_config" {
+              for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+              content {
+                fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                position          = lookup(ip_set_forwarded_ip_config.value, "position")
+              }
+            }
           }
         }
 
@@ -690,6 +699,15 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                   content {
                     arn = lookup(ip_set_reference_statement.value, "arn")
+
+                    dynamic "ip_set_forwarded_ip_config" {
+                      for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                        position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                      }
+                    }
                   }
                 }
 
@@ -1328,6 +1346,15 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                           content {
                             arn = lookup(ip_set_reference_statement.value, "arn")
+
+                            dynamic "ip_set_forwarded_ip_config" {
+                              for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                                position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                              }
+                            }
                           }
                         }
 
@@ -1974,6 +2001,15 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                   content {
                     arn = lookup(ip_set_reference_statement.value, "arn")
+
+                    dynamic "ip_set_forwarded_ip_config" {
+                      for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                        position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                      }
+                    }
                   }
                 }
 
@@ -2612,6 +2648,15 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                           content {
                             arn = lookup(ip_set_reference_statement.value, "arn")
+
+                            dynamic "ip_set_forwarded_ip_config" {
+                              for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                                position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                              }
+                            }
                           }
                         }
 
@@ -3258,6 +3303,15 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                   content {
                     arn = lookup(ip_set_reference_statement.value, "arn")
+
+                    dynamic "ip_set_forwarded_ip_config" {
+                      for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                        position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                      }
+                    }
                   }
                 }
 
@@ -3903,6 +3957,15 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(scope_down_statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(scope_down_statement.value, "ip_set_reference_statement")]
                   content {
                     arn = lookup(ip_set_reference_statement.value, "arn")
+
+                    dynamic "ip_set_forwarded_ip_config" {
+                      for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                        position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                      }
+                    }
                   }
                 }
 
@@ -4548,6 +4611,15 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                           content {
                             arn = lookup(ip_set_reference_statement.value, "arn")
+
+                            dynamic "ip_set_forwarded_ip_config" {
+                              for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                                position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                              }
+                            }
                           }
                         }
 
@@ -5186,6 +5258,15 @@ resource "aws_wafv2_rule_group" "this" {
                                   for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                                   content {
                                     arn = lookup(ip_set_reference_statement.value, "arn")
+
+                                    dynamic "ip_set_forwarded_ip_config" {
+                                      for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                                      content {
+                                        fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                                        header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                                        position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                                      }
+                                    }
                                   }
                                 }
 
@@ -5832,6 +5913,15 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                           content {
                             arn = lookup(ip_set_reference_statement.value, "arn")
+
+                            dynamic "ip_set_forwarded_ip_config" {
+                              for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                                position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                              }
+                            }
                           }
                         }
 
@@ -6470,6 +6560,15 @@ resource "aws_wafv2_rule_group" "this" {
                                   for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                                   content {
                                     arn = lookup(ip_set_reference_statement.value, "arn")
+
+                                    dynamic "ip_set_forwarded_ip_config" {
+                                      for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                                      content {
+                                        fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                                        header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                                        position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                                      }
+                                    }
                                   }
                                 }
 
@@ -7116,6 +7215,15 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "ip_set_reference_statement", null) == null ? [] : [lookup(statement.value, "ip_set_reference_statement")]
                           content {
                             arn = lookup(ip_set_reference_statement.value, "arn")
+
+                            dynamic "ip_set_forwarded_ip_config" {
+                              for_each = lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config", null) == null ? [] : [lookup(ip_set_reference_statement.value, "ip_set_forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(ip_set_forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(ip_set_forwarded_ip_config.value, "header_name")
+                                position          = lookup(ip_set_forwarded_ip_config.value, "position")
+                              }
+                            }
                           }
                         }
 

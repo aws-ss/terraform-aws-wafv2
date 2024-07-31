@@ -33,6 +33,24 @@ module "rule_group" {
         metric_name                = "cloudwatch_metric_name"
         sampled_requests_enabled   = false
       }
+    },
+    {
+      name     = "Rule02"
+      priority = 20
+      action   = "block"
+      ip_set_reference_statement = {
+        arn = ""
+        ip_set_forwarded_ip_config = {
+          fallback_behavior = "NO_MATCH"
+          header_name       = "X-Forwarded-For"
+          position          = "ANY"
+        }
+      }
+      visibility_config = {
+        cloudwatch_metrics_enabled = false
+        metric_name                = "cloudwatch_metric_name"
+        sampled_requests_enabled   = false
+      }
     }
   ]
   visibility_config = {
