@@ -7895,7 +7895,7 @@ resource "aws_wafv2_web_acl" "this" {
           content {
             aggregate_key_type = lookup(rate_based_statement.value, "aggregate_key_type")
             limit              = lookup(rate_based_statement.value, "limit")
-            evaluation_window_sec = lookup(evaluation_window_sec.value, "evaluation_window_sec")
+            evaluation_window_sec = lookup(rate_based_statement.value, "evaluation_window_sec")
 
 
             dynamic "forwarded_ip_config" {

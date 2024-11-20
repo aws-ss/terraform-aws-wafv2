@@ -3942,7 +3942,7 @@ resource "aws_wafv2_rule_group" "this" {
           content {
             aggregate_key_type = lookup(rate_based_statement.value, "aggregate_key_type")
             limit              = lookup(rate_based_statement.value, "limit")
-            evaluation_window_sec = lookup(evaluation_window_sec.value, "evaluation_window_sec")
+            evaluation_window_sec = lookup(rate_based_statement.value, "evaluation_window_sec")
 
             dynamic "forwarded_ip_config" {
               for_each = lookup(rate_based_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(rate_based_statement.value, "forwarded_ip_config")]
