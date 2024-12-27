@@ -7893,8 +7893,9 @@ resource "aws_wafv2_web_acl" "this" {
         dynamic "rate_based_statement" {
           for_each = lookup(rule.value, "rate_based_statement", null) == null ? [] : [lookup(rule.value, "rate_based_statement")]
           content {
-            aggregate_key_type = lookup(rate_based_statement.value, "aggregate_key_type")
-            limit              = lookup(rate_based_statement.value, "limit")
+            aggregate_key_type    = lookup(rate_based_statement.value, "aggregate_key_type")
+            limit                 = lookup(rate_based_statement.value, "limit")
+            evaluation_window_sec = lookup(rate_based_statement.value, "evaluation_window_sec")
 
             dynamic "forwarded_ip_config" {
               for_each = lookup(rate_based_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(rate_based_statement.value, "forwarded_ip_config")]
