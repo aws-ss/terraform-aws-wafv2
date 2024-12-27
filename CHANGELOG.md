@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.2.0...v3.3.0) (2024-12-27)
+
+
+### Features
+
+* Add 'evaluation_window_sec' argument in rate_based_statement ([42c2322](https://github.com/aws-ss/terraform-aws-wafv2/commit/42c232264f7df83c58d16e2f4ae89eeecbd99aae))
+
 ## [3.2.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.1.1...v3.2.0) (2024-07-31)
 
 
