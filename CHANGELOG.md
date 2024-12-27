@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.4.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.3.0...v3.4.0) (2024-12-27)
+
+
+### Features
+
+* Add 'forwarded_ip_config' argument in geo_match_statement ([398c50e](https://github.com/aws-ss/terraform-aws-wafv2/commit/398c50e9b00df9e77d434b002e3f3df9cf883471))
+
 ## [3.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.2.0...v3.3.0) (2024-12-27)
 
 
