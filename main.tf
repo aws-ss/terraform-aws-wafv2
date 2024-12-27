@@ -56,6 +56,10 @@ resource "aws_wafv2_web_acl" "this" {
             for_each = action.value == "captcha" ? [1] : []
             content {}
           }
+          dynamic "challenge" {
+            for_each = action.value == "challenge" ? [1] : []
+            content {}
+          }
         }
       }
 

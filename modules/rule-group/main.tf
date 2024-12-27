@@ -30,6 +30,10 @@ resource "aws_wafv2_rule_group" "this" {
             for_each = action.value == "captcha" ? [1] : []
             content {}
           }
+          dynamic "challenge" {
+            for_each = action.value == "challenge" ? [1] : []
+            content {}
+          }
         }
       }
 
