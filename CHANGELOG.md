@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.5.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.4.0...v3.5.0) (2024-12-27)
+
+
+### Features
+
+* Add 'challenge' argument in action ([322450e](https://github.com/aws-ss/terraform-aws-wafv2/commit/322450e10a4fec0807003ee8fe54eab69e93c968))
+
 ## [3.4.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.3.0...v3.4.0) (2024-12-27)
 
 
