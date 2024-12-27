@@ -37,6 +37,10 @@ module "wafv2" {
         scope_down_statement = {
           geo_match_statement = {
             country_codes : ["CN"]
+            forwarded_ip_config = {
+              fallback_behavior = "MATCH"
+              header_name       = "X-Forwarded-For"
+            }
           }
         }
       }

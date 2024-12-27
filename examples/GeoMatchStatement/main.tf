@@ -20,6 +20,10 @@ module "wafv2" {
       action   = "count"
       geo_match_statement = {
         country_codes : ["CN", "US"]
+        forwarded_ip_config = {
+          fallback_behavior = "MATCH"
+          header_name       = "X-Forwarded-For"
+        }
       }
       visibility_config = {
         cloudwatch_metrics_enabled = false
