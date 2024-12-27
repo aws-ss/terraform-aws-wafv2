@@ -61,6 +61,14 @@ resource "aws_wafv2_rule_group" "this" {
           for_each = lookup(rule.value, "geo_match_statement", null) == null ? [] : [lookup(rule.value, "geo_match_statement")]
           content {
             country_codes = lookup(geo_match_statement.value, "country_codes")
+
+            dynamic "forwarded_ip_config" {
+              for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+              content {
+                fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                header_name       = lookup(forwarded_ip_config.value, "header_name")
+              }
+            }
           }
         }
 
@@ -692,6 +700,14 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                   content {
                     country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                    dynamic "forwarded_ip_config" {
+                      for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(forwarded_ip_config.value, "header_name")
+                      }
+                    }
                   }
                 }
 
@@ -1339,6 +1355,14 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                           content {
                             country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                            dynamic "forwarded_ip_config" {
+                              for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(forwarded_ip_config.value, "header_name")
+                              }
+                            }
                           }
                         }
 
@@ -1994,6 +2018,14 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                   content {
                     country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                    dynamic "forwarded_ip_config" {
+                      for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(forwarded_ip_config.value, "header_name")
+                      }
+                    }
                   }
                 }
 
@@ -2641,6 +2673,14 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                           content {
                             country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                            dynamic "forwarded_ip_config" {
+                              for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(forwarded_ip_config.value, "header_name")
+                              }
+                            }
                           }
                         }
 
@@ -3296,6 +3336,14 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                   content {
                     country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                    dynamic "forwarded_ip_config" {
+                      for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(forwarded_ip_config.value, "header_name")
+                      }
+                    }
                   }
                 }
 
@@ -3974,6 +4022,14 @@ resource "aws_wafv2_rule_group" "this" {
                   for_each = lookup(scope_down_statement.value, "geo_match_statement", null) == null ? [] : [lookup(scope_down_statement.value, "geo_match_statement")]
                   content {
                     country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                    dynamic "forwarded_ip_config" {
+                      for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                      content {
+                        fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                        header_name       = lookup(forwarded_ip_config.value, "header_name")
+                      }
+                    }
                   }
                 }
 
@@ -4605,6 +4661,14 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                           content {
                             country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                            dynamic "forwarded_ip_config" {
+                              for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(forwarded_ip_config.value, "header_name")
+                              }
+                            }
                           }
                         }
 
@@ -5252,6 +5316,14 @@ resource "aws_wafv2_rule_group" "this" {
                                   for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                                   content {
                                     country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                                    dynamic "forwarded_ip_config" {
+                                      for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                                      content {
+                                        fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                                        header_name       = lookup(forwarded_ip_config.value, "header_name")
+                                      }
+                                    }
                                   }
                                 }
 
@@ -5907,6 +5979,14 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                           content {
                             country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                            dynamic "forwarded_ip_config" {
+                              for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(forwarded_ip_config.value, "header_name")
+                              }
+                            }
                           }
                         }
 
@@ -6554,6 +6634,14 @@ resource "aws_wafv2_rule_group" "this" {
                                   for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                                   content {
                                     country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                                    dynamic "forwarded_ip_config" {
+                                      for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                                      content {
+                                        fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                                        header_name       = lookup(forwarded_ip_config.value, "header_name")
+                                      }
+                                    }
                                   }
                                 }
 
@@ -7209,6 +7297,14 @@ resource "aws_wafv2_rule_group" "this" {
                           for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
                           content {
                             country_codes = lookup(geo_match_statement.value, "country_codes")
+
+                            dynamic "forwarded_ip_config" {
+                              for_each = lookup(geo_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(geo_match_statement.value, "forwarded_ip_config")]
+                              content {
+                                fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                                header_name       = lookup(forwarded_ip_config.value, "header_name")
+                              }
+                            }
                           }
                         }
 
