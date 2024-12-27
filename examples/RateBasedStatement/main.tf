@@ -19,8 +19,9 @@ module "wafv2" {
       priority = 10
       action   = "block"
       rate_based_statement = {
-        limit              = 1000
-        aggregate_key_type = "FORWARDED_IP"
+        limit                 = 1000
+        aggregate_key_type    = "FORWARDED_IP"
+        evaluation_window_sec = 120
         forwarded_ip_config = {
           fallback_behavior = "MATCH"
           header_name       = "X-Forwarded-For"
