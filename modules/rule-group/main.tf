@@ -4003,6 +4003,103 @@ resource "aws_wafv2_rule_group" "this" {
                 header_name       = lookup(forwarded_ip_config.value, "header_name")
               }
             }
+            dynamic "custom_key" {
+              for_each = lookup(rate_based_statement.value, "custom_key", null) == null ? null : lookup(rate_based_statement.value, "custom_key")
+              iterator = custom_key
+
+              content {
+                dynamic "cookie" {
+                  for_each = lookup(custom_key.value, "cookie", null) == null ? [] : [lookup(custom_key.value, "cookie")]
+
+                  content {
+                    name = lookup(cookie.value, "name")
+
+                    dynamic "text_transformation" {
+                      for_each = lookup(cookie.value, "text_transformation")
+                      content {
+                        priority = lookup(text_transformation.value, "priority")
+                        type     = lookup(text_transformation.value, "type")
+                      }
+                    }
+                  }
+                }
+                dynamic "forwarded_ip" {
+                  for_each = lookup(custom_key.value, "forwarded_ip", null) == null ? [] : [lookup(custom_key.value, "forwarded_ip")]
+                  content {}
+                }
+                dynamic "header" {
+                  for_each = lookup(custom_key.value, "header", null) == null ? [] : [lookup(custom_key.value, "header")]
+
+                  content {
+                    name = lookup(header.value, "name")
+
+                    dynamic "text_transformation" {
+                      for_each = lookup(header.value, "text_transformation")
+                      content {
+                        priority = lookup(text_transformation.value, "priority")
+                        type     = lookup(text_transformation.value, "type")
+                      }
+                    }
+                  }
+                }
+                dynamic "http_method" {
+                  for_each = lookup(custom_key.value, "http_method", null) == null ? [] : [lookup(custom_key.value, "http_method")]
+                  content {}
+                }
+                dynamic "ip" {
+                  for_each = lookup(custom_key.value, "ip", null) == null ? [] : [lookup(custom_key.value, "ip")]
+                  content {}
+                }
+                dynamic "label_namespace" {
+                  for_each = lookup(custom_key.value, "label_namespace", null) == null ? [] : [lookup(custom_key.value, "label_namespace")]
+                  content {
+                    namespace = lookup(label_namespace.value, "namespace")
+                  }
+                }
+                dynamic "query_argument" {
+                  for_each = lookup(custom_key.value, "query_argument", null) == null ? [] : [lookup(custom_key.value, "query_argument")]
+
+                  content {
+                    name = lookup(query_argument.value, "name")
+
+                    dynamic "text_transformation" {
+                      for_each = lookup(query_argument.value, "text_transformation")
+                      content {
+                        priority = lookup(text_transformation.value, "priority")
+                        type     = lookup(text_transformation.value, "type")
+                      }
+                    }
+                  }
+                }
+                dynamic "query_string" {
+                  for_each = lookup(custom_key.value, "query_string", null) == null ? [] : [lookup(custom_key.value, "query_string")]
+
+                  content {
+                    dynamic "text_transformation" {
+                      for_each = lookup(query_string.value, "text_transformation")
+                      content {
+                        priority = lookup(text_transformation.value, "priority")
+                        type     = lookup(text_transformation.value, "type")
+                      }
+                    }
+                  }
+                }
+                dynamic "uri_path" {
+                  for_each = lookup(custom_key.value, "uri_path", null) == null ? [] : [lookup(custom_key.value, "uri_path")]
+
+                  content {
+                    dynamic "text_transformation" {
+                      for_each = lookup(uri_path.value, "text_transformation")
+                      content {
+                        priority = lookup(text_transformation.value, "priority")
+                        type     = lookup(text_transformation.value, "type")
+                      }
+                    }
+                  }
+                }
+
+              }
+            }
             dynamic "scope_down_statement" {
               for_each = lookup(rate_based_statement.value, "scope_down_statement", null) == null ? [] : [lookup(rate_based_statement.value, "scope_down_statement")]
               content {
