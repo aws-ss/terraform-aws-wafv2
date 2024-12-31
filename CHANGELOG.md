@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.6.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.5.0...v3.6.0) (2024-12-31)
+
+
+### Features
+
+* Add 'custom_keys' in rate_based_statement ([4a3c5be](https://github.com/aws-ss/terraform-aws-wafv2/commit/4a3c5be05a34485fe12a61967b03a1d7906190b0))
+
 ## [3.5.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.4.0...v3.5.0) (2024-12-27)
 
 
