@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.6.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.6.0...v3.6.1) (2025-01-03)
+
+
+### Bug Fixes
+
+* Update terraform/providers version ([448add5](https://github.com/aws-ss/terraform-aws-wafv2/commit/448add546a1f4f919e06a4c327fbcc3e90534b1c))
+
 ## [3.6.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.5.0...v3.6.0) (2024-12-31)
 
 
