@@ -33,8 +33,8 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.6 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.51.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.6 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.82.2 |
 
 ## Providers
 
