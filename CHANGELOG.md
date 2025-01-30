@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.7.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.6.1...v3.7.0) (2025-01-30)
+
+
+### Features
+
+* Added AWSManagedRules rule sets to WAFv2 ([146f78e](https://github.com/aws-ss/terraform-aws-wafv2/commit/146f78e54e6e7c38c6aafbbe24030f186aeee7e8))
+
 ### [3.6.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.6.0...v3.6.1) (2025-01-03)
 
 
