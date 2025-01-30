@@ -85,6 +85,96 @@ resource "aws_wafv2_web_acl" "this" {
             vendor_name = lookup(managed_rule_group_statement.value, "vendor_name", "AWS")
             version     = lookup(managed_rule_group_statement.value, "version", null)
 
+            dynamic "managed_rule_group_configs" {
+              for_each = lookup(managed_rule_group_statement.value, "managed_rule_group_configs", null) == null ? [] : lookup(managed_rule_group_statement.value, "managed_rule_group_configs")
+              content {
+                dynamic "aws_managed_rules_acfp_rule_set" {
+                  for_each = lookup(managed_rule_group_configs.value, "aws_managed_rules_acfp_rule_set", null) == null ? [] : [lookup(managed_rule_group_configs.value, "aws_managed_rules_acfp_rule_set")]
+                  content {
+                    creation_path          = lookup(aws_managed_rules_acfp_rule_set.value, "creation_path")
+                    enable_regex_in_path   = lookup(aws_managed_rules_acfp_rule_set.value, "enable_regex_in_path", false)
+                    registration_page_path = lookup(aws_managed_rules_acfp_rule_set.value, "registration_page_path")
+
+                    dynamic "request_inspection" {
+                      for_each = lookup(aws_managed_rules_acfp_rule_set.value, "request_inspection") == null ? [] : [lookup(aws_managed_rules_acfp_rule_set.value, "request_inspection")]
+                      content {
+                        payload_type = lookup(request_inspection.value, "payload_type", "JSON")
+
+                        dynamic "address_fields" {
+                          for_each = lookup(request_inspection.value, "address_fields", null) == null ? [] : [lookup(request_inspection.value, "address_fields")]
+
+                          content {
+                            identifiers = lookup(address_fields.value, "identifiers")
+                          }
+                        }
+                        dynamic "email_field" {
+                          for_each = lookup(request_inspection.value, "email_field", null) == null ? [] : [lookup(request_inspection.value, "email_field")]
+                          content {
+                            identifier = lookup(email_field.value, "identifier")
+                          }
+                        }
+                        dynamic "password_field" {
+                          for_each = lookup(request_inspection.value, "password_field", null) == null ? [] : [lookup(request_inspection.value, "password_field")]
+                          content {
+                            identifier = lookup(password_field.value, "identifier")
+                          }
+                        }
+                        dynamic "phone_number_fields" {
+                          for_each = lookup(request_inspection.value, "phone_number_fields", null) == null ? [] : [lookup(request_inspection.value, "phone_number_fields")]
+
+                          content {
+                            identifiers = lookup(phone_number_fields.value, "identifiers")
+                          }
+                        }
+                        dynamic "username_field" {
+                          for_each = lookup(request_inspection.value, "username_field", null) == null ? [] : [lookup(request_inspection.value, "username_field")]
+                          content {
+                            identifier = lookup(username_field.value, "identifier")
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                dynamic "aws_managed_rules_atp_rule_set" {
+                  for_each = lookup(managed_rule_group_configs.value, "aws_managed_rules_atp_rule_set", null) == null ? [] : [lookup(managed_rule_group_configs.value, "aws_managed_rules_atp_rule_set")]
+                  content {
+                    enable_regex_in_path = lookup(aws_managed_rules_atp_rule_set.value, "enable_regex_in_path", false)
+                    login_path           = lookup(aws_managed_rules_atp_rule_set.value, "login_path")
+
+                    dynamic "request_inspection" {
+                      for_each = lookup(aws_managed_rules_atp_rule_set.value, "request_inspection") == null ? [] : [lookup(aws_managed_rules_atp_rule_set.value, "request_inspection")]
+                      content {
+                        payload_type = lookup(request_inspection.value, "payload_type", "JSON")
+
+                        dynamic "password_field" {
+                          for_each = lookup(request_inspection.value, "password_field", null) == null ? [] : [lookup(request_inspection.value, "password_field")]
+                          content {
+                            identifier = lookup(password_field.value, "identifier")
+                          }
+                        }
+                        dynamic "username_field" {
+                          for_each = lookup(request_inspection.value, "username_field", null) == null ? [] : [lookup(request_inspection.value, "username_field")]
+                          content {
+                            identifier = lookup(username_field.value, "identifier")
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                dynamic "aws_managed_rules_bot_control_rule_set" {
+                  for_each = lookup(managed_rule_group_configs.value, "aws_managed_rules_bot_control_rule_set", null) == null ? [] : [lookup(managed_rule_group_configs.value, "aws_managed_rules_bot_control_rule_set")]
+                  content {
+                    enable_machine_learning = lookup(aws_managed_rules_bot_control_rule_set.value, "enable_machine_learning", true)
+                    inspection_level        = upper(lookup(aws_managed_rules_bot_control_rule_set.value, "inspection_level", "COMMON"))
+                  }
+                }
+              }
+            }
+
             dynamic "rule_action_override" {
               for_each = lookup(managed_rule_group_statement.value, "rule_action_override", null) == null ? [] : lookup(managed_rule_group_statement.value, "rule_action_override")
               content {
@@ -113,6 +203,7 @@ resource "aws_wafv2_web_acl" "this" {
                 }
               }
             }
+
             dynamic "scope_down_statement" {
               for_each = lookup(managed_rule_group_statement.value, "scope_down_statement", null) == null ? [] : [lookup(managed_rule_group_statement.value, "scope_down_statement")]
               content {
@@ -12107,6 +12198,20 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  captcha_config {
+    immunity_time_property {
+      immunity_time = var.captcha_config
+    }
+  }
+
+  challenge_config {
+    immunity_time_property {
+      immunity_time = var.challenge_config
+    }
+  }
+
+  token_domains = var.token_domains
+
   visibility_config {
     cloudwatch_metrics_enabled = var.visibility_config.cloudwatch_metrics_enabled
     metric_name                = var.visibility_config.metric_name
@@ -12158,30 +12263,34 @@ resource "aws_wafv2_web_acl_logging_configuration" "this" {
 
   dynamic "logging_filter" {
     for_each = var.logging_filter == null ? [] : [var.logging_filter]
+
     content {
       default_behavior = lookup(logging_filter.value, "default_behavior")
 
       dynamic "filter" {
         for_each = lookup(logging_filter.value, "filter")
         iterator = filter
+
         content {
           behavior    = lookup(filter.value, "behavior")
           requirement = lookup(filter.value, "requirement")
 
           dynamic "condition" {
             for_each = lookup(filter.value, "condition")
+
             content {
               dynamic "action_condition" {
                 for_each = lookup(condition.value, "action_condition", null) == null ? {} : lookup(condition.value, "action_condition")
                 iterator = action_condition
+
                 content {
                   action = action_condition.value
                 }
               }
-
               dynamic "label_name_condition" {
                 for_each = lookup(condition.value, "label_name_condition", null) == null ? {} : lookup(condition.value, "label_name_condition")
                 iterator = label_name_condition
+
                 content {
                   label_name = label_name_condition.value
                 }

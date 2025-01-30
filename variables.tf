@@ -30,6 +30,24 @@ variable "custom_response_body" {
   default     = {}
 }
 
+variable "captcha_config" {
+  description = "(Optional) The amount of time, in seconds, that a CAPTCHA or challenge timestamp is considered valid by AWS WAF. The default setting is 300."
+  type        = number
+  default     = 300
+}
+
+variable "challenge_config" {
+  description = "(Optional) The amount of time, in seconds, that a CAPTCHA or challenge timestamp is considered valid by AWS WAF. The default setting is 300."
+  type        = number
+  default     = 300
+}
+
+variable "token_domains" {
+  description = "(Optional) Specifies the domains that AWS WAF should accept in a web request token. This enables the use of tokens across multiple protected websites. When AWS WAF provides a token, it uses the domain of the AWS resource that the web ACL is protecting. If you don't specify a list of token domains, AWS WAF accepts tokens only for the domain of the protected resource. With a token domain list, AWS WAF accepts the resource's host domain plus all domains in the token domain list, including their prefixed subdomains."
+  type        = list(string)
+  default     = []
+}
+
 variable "rule" {
   description = "(Optional) Rule blocks used to identify the web requests that you want to allow, block, or count."
   type        = any

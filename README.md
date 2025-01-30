@@ -15,7 +15,10 @@ A Terraform module that creates Web Application Firewall (WAFV2).
   - GeoMatchStatement
   - IPSetReferenceStatement
   - LabelMatchStatement
-  - ManagedRuleGroupStatement
+  - ManagedRuleGroupStatemen
+    - AWSManagedRulesACFPRuleSet
+    - AWSManagedRulesATPRuleSet
+    - AWSManagedRulesBotControlRuleSet
   - NotStatement
   - OrStatement
   - RateBasedStatement
@@ -58,6 +61,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_captcha_config"></a> [captcha\_config](#input\_captcha\_config) | (Optional) The amount of time, in seconds, that a CAPTCHA or challenge timestamp is considered valid by AWS WAF. The default setting is 300. | `number` | `300` | no |
+| <a name="input_challenge_config"></a> [challenge\_config](#input\_challenge\_config) | (Optional) The amount of time, in seconds, that a CAPTCHA or challenge timestamp is considered valid by AWS WAF. The default setting is 300. | `number` | `300` | no |
 | <a name="input_custom_response_body"></a> [custom\_response\_body](#input\_custom\_response\_body) | (Optional) Defines custom response bodies that can be referenced by custom\_response actions. | `map(any)` | `{}` | no |
 | <a name="input_default_action"></a> [default\_action](#input\_default\_action) | (Required) Action to perform if none of the rules contained in the WebACL match. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | (Optional) Friendly description of the WebACL. | `string` | `null` | no |
@@ -71,6 +76,7 @@ No modules.
 | <a name="input_rule"></a> [rule](#input\_rule) | (Optional) Rule blocks used to identify the web requests that you want to allow, block, or count. | `any` | n/a | yes |
 | <a name="input_scope"></a> [scope](#input\_scope) | (Required) Specifies whether this is for an AWS CloudFront distribution or for a regional application | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Map of key-value pairs to associate with the resource. | `map(string)` | `null` | no |
+| <a name="input_token_domains"></a> [token\_domains](#input\_token\_domains) | (Optional) Specifies the domains that AWS WAF should accept in a web request token. This enables the use of tokens across multiple protected websites. When AWS WAF provides a token, it uses the domain of the AWS resource that the web ACL is protecting. If you don't specify a list of token domains, AWS WAF accepts tokens only for the domain of the protected resource. With a token domain list, AWS WAF accepts the resource's host domain plus all domains in the token domain list, including their prefixed subdomains. | `list(string)` | `[]` | no |
 | <a name="input_visibility_config"></a> [visibility\_config](#input\_visibility\_config) | (Required) Defines and enables Amazon CloudWatch metrics and web request sample collection. | `map(string)` | n/a | yes |
 
 ## Outputs
