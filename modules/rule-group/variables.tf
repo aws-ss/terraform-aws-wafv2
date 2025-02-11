@@ -19,6 +19,12 @@ variable "capacity" {
   type        = number
 }
 
+variable "custom_response_body" {
+  description = "(Optional) Defines custom response bodies that can be referenced by custom_response actions."
+  type        = map(string)
+  default     = {}
+}
+
 variable "visibility_config" {
   description = "(Required) Defines and enables Amazon CloudWatch metrics and web request sample collection."
   type        = map(string)

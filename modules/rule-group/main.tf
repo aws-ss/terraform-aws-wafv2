@@ -20,7 +20,15 @@ resource "aws_wafv2_rule_group" "this" {
           }
           dynamic "block" {
             for_each = action.value == "block" ? [1] : []
-            content {}
+            content {
+              dynamic "custom_response" {
+                for_each = [var.custom_response_body]
+                content {
+                  custom_response_body_key = lookup(var.custom_response_body, "custom_response_body_key", lookup(var.custom_response_body, "key"))
+                  response_code            = 403
+                }
+              }
+            }
           }
           dynamic "count" {
             for_each = action.value == "count" ? [1] : []
@@ -8060,6 +8068,15 @@ resource "aws_wafv2_rule_group" "this" {
           sampled_requests_enabled   = lookup(visibility_config.value, "sampled_requests_enabled")
         }
       }
+    }
+  }
+
+  dynamic "custom_response_body" {
+    for_each = [var.custom_response_body]
+    content {
+      key          = lookup(var.custom_response_body, "key")
+      content      = lookup(var.custom_response_body, "content")
+      content_type = lookup(var.custom_response_body, "content_type")
     }
   }
 
