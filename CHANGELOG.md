@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.7.2](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.1...v3.7.2) (2025-02-24)
+
+
+### Bug Fixes
+
+* Add custom_response support for 'block' action in rule-group ([bc05415](https://github.com/aws-ss/terraform-aws-wafv2/commit/bc05415d9b26cd1e0a80d2a1e3053be577234017))
+
 ### [3.7.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.0...v3.7.1) (2025-02-24)
 
 
