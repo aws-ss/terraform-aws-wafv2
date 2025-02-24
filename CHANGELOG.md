@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.7.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.0...v3.7.1) (2025-02-24)
+
+
+### Bug Fixes
+
+* Ensure for_each is always a list to prevent null assignment issues ([a784773](https://github.com/aws-ss/terraform-aws-wafv2/commit/a7847736f476f0c3b3c9a489b68bd9f0cab47fe4))
+
 ## [3.7.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.6.1...v3.7.0) (2025-01-30)
 
 
