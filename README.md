@@ -15,7 +15,7 @@ A Terraform module that creates Web Application Firewall (WAFV2).
   - GeoMatchStatement
   - IPSetReferenceStatement
   - LabelMatchStatement
-  - ManagedRuleGroupStatemen
+  - ManagedRuleGroupStatement
     - AWSManagedRulesACFPRuleSet
     - AWSManagedRulesATPRuleSet
     - AWSManagedRulesBotControlRuleSet
