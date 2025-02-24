@@ -20,7 +20,23 @@ resource "aws_wafv2_rule_group" "this" {
           }
           dynamic "block" {
             for_each = action.value == "block" ? [1] : []
-            content {}
+            content {
+              dynamic "custom_response" {
+                for_each = lookup(rule.value, "custom_response", null) == null ? [] : [lookup(rule.value, "custom_response")]
+                content {
+                  custom_response_body_key = lookup(custom_response.value, "custom_response_body_key", null)
+                  response_code            = lookup(custom_response.value, "response_code", 403)
+
+                  dynamic "response_header" {
+                    for_each = lookup(custom_response.value, "response_header", [])
+                    content {
+                      name  = lookup(response_header.value, "name")
+                      value = lookup(response_header.value, "value")
+                    }
+                  }
+                }
+              }
+            }
           }
           dynamic "count" {
             for_each = action.value == "count" ? [1] : []
