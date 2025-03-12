@@ -12239,29 +12239,35 @@ resource "aws_wafv2_web_acl_logging_configuration" "this" {
   resource_arn            = aws_wafv2_web_acl.this.arn
 
   dynamic "redacted_fields" {
-    for_each = var.redacted_fields == null ? [] : [var.redacted_fields]
+    for_each = try(var.redacted_fields.single_header, [])
     content {
       dynamic "single_header" {
-        for_each = lookup(redacted_fields.value, "single_header", null) == null ? [] : [lookup(redacted_fields.value, "single_header")]
+        for_each = [redacted_fields.value]
         content {
-          name = lower(lookup(single_header.value, "name"))
+          name = lower(single_header.value.name)
         }
       }
+    }
+  }
 
-      dynamic "method" {
-        for_each = lookup(redacted_fields.value, "method", null) == null ? [] : [lookup(redacted_fields.value, "method")]
-        content {}
-      }
+  dynamic "redacted_fields" {
+    for_each = contains(keys(var.redacted_fields), "method") ? [1] : []
+    content {
+      method {}
+    }
+  }
 
-      dynamic "query_string" {
-        for_each = lookup(redacted_fields.value, "query_string", null) == null ? [] : [lookup(redacted_fields.value, "query_string")]
-        content {}
-      }
+  dynamic "redacted_fields" {
+    for_each = contains(keys(var.redacted_fields), "query_string") ? [1] : []
+    content {
+      query_string {}
+    }
+  }
 
-      dynamic "uri_path" {
-        for_each = lookup(redacted_fields.value, "uri_path", null) == null ? [] : [lookup(redacted_fields.value, "uri_path")]
-        content {}
-      }
+  dynamic "redacted_fields" {
+    for_each = contains(keys(var.redacted_fields), "uri_path") ? [1] : []
+    content {
+      uri_path {}
     }
   }
 

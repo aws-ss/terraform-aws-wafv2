@@ -11,7 +11,13 @@ module "logging_configuration" {
   enabled_logging_configuration = true
   log_destination_configs       = ""
   redacted_fields = {
-    uri_path = {}
+    single_header = {
+      authorization  = { name = "authorization" },
+      x-other-header = { name = "x-other-header" },
+    }
+    method       = {}
+    query_string = {}
+    uri_path     = {}
   }
   logging_filter = {
     default_behavior = "DROP"
