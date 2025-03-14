@@ -200,7 +200,7 @@ resource "aws_wafv2_web_acl" "this" {
                       content {}
                     }
                     dynamic "challenge" {
-                      for_each = action_to_use.value == "count" ? [1] : []
+                      for_each = action_to_use.value == "challenge" ? [1] : []
                       content {}
                     }
                   }
