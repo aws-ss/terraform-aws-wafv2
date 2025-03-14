@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.7.3](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.2...v3.7.3) (2025-03-14)
+
+
+### Bug Fixes
+
+* 'rule_action_override' challenge config condition ([7a085b6](https://github.com/aws-ss/terraform-aws-wafv2/commit/7a085b6d50173ce7863d24983b82e984d3f2442a))
+* rule_action_override challenge config condition ([231b436](https://github.com/aws-ss/terraform-aws-wafv2/commit/231b436b536c0ef0999a3a71ebc1ff064385854b))
+
 ### [3.7.2](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.1...v3.7.2) (2025-02-24)
 
 
