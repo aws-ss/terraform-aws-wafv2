@@ -83,7 +83,7 @@ variable "log_destination_configs" {
 }
 
 variable "redacted_fields" {
-  type        = map(any)
+  type        = list(any)
   description = "(Optional) The parts of the request that you want to keep out of the logs. Up to 100 redacted_fields blocks are supported."
   default     = null
 }

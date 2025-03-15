@@ -12239,7 +12239,9 @@ resource "aws_wafv2_web_acl_logging_configuration" "this" {
   resource_arn            = aws_wafv2_web_acl.this.arn
 
   dynamic "redacted_fields" {
-    for_each = var.redacted_fields == null ? [] : [var.redacted_fields]
+    for_each = var.redacted_fields == null ? [] : var.redacted_fields
+    iterator = redacted_fields
+
     content {
       dynamic "single_header" {
         for_each = lookup(redacted_fields.value, "single_header", null) == null ? [] : [lookup(redacted_fields.value, "single_header")]
