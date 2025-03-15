@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.8.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.3...v3.8.0) (2025-03-15)
+
+
+### Features
+
+* Support multiple conditions in 'redacted_fields' ([36a4079](https://github.com/aws-ss/terraform-aws-wafv2/commit/36a4079a8a1eec3059d769e7e3d1d1fff5574a47))
+
 ### [3.7.3](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.2...v3.7.3) (2025-03-14)
 
 
