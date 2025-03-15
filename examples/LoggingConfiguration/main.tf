@@ -27,7 +27,6 @@ module "logging_configuration" {
         name = "host"
       }
     },
-
   ]
   logging_filter = {
     default_behavior = "DROP"
