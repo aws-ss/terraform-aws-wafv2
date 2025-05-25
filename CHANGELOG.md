@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.8.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.8.0...v3.8.1) (2025-05-25)
+
+
+### Bug Fixes
+
+* custom_key always yields an empty list ([964a93b](https://github.com/aws-ss/terraform-aws-wafv2/commit/964a93b97cb57c7dbddea8ec587e5cab56ee1c5d))
+
 ## [3.8.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.7.3...v3.8.0) (2025-03-15)
 
 
