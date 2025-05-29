@@ -39,9 +39,10 @@ module "wafv2" {
   ]
 
   custom_response_body = {
-    key          = "CustomResponseBody",
-    content      = "Not authorized",
-    content_type = "TEXT_PLAIN"
+    "CustomResponseBody" = {
+      content      = "Not authorized",
+      content_type = "TEXT_PLAIN"
+    }
   }
 
   visibility_config = {
