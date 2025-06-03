@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.9.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.8.1...v3.9.0) (2025-06-03)
+
+
+### Features
+
+* Support 'association_config' argument ([54d956c](https://github.com/aws-ss/terraform-aws-wafv2/commit/54d956c56e5e165faea0e3b9b7161f9a8b3e7adb))
+
 ### [3.8.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.8.0...v3.8.1) (2025-05-25)
 
 
