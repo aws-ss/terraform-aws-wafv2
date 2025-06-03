@@ -101,6 +101,13 @@ resource "aws_wafv2_web_acl" "this" {
         }
       }
 
+      dynamic "rule_label" {
+        for_each = lookup(rule.value, "rule_label", null) == null ? [] : [lookup(rule.value, "rule_label")]
+        content {
+          name = lookup(rule_label.value, "name")
+        }
+      }
+
       dynamic "override_action" {
         for_each = lookup(rule.value, "override_action", null) == null ? [] : [lookup(rule.value, "override_action")]
         content {
