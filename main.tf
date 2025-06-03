@@ -15,6 +15,44 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  dynamic "association_config" {
+    for_each = var.association_config == null ? [] : [var.association_config]
+    content {
+      dynamic "request_body" {
+        for_each = lookup(association_config.value, "request_body", null) == null ? [] : [lookup(association_config.value, "request_body")]
+        content {
+          dynamic "api_gateway" {
+            for_each = lookup(request_body.value, "api_gateway", null) == null ? [] : [1]
+            content {
+              default_size_inspection_limit = request_body.value.api_gateway.default_size_inspection_limit
+            }
+          }
+
+          dynamic "app_runner_service" {
+            for_each = lookup(request_body.value, "app_runner_service", null) == null ? [] : [1]
+            content {
+              default_size_inspection_limit = request_body.value.app_runner_service.default_size_inspection_limit
+            }
+          }
+
+          dynamic "cognito_user_pool" {
+            for_each = lookup(request_body.value, "cognito_user_pool", null) == null ? [] : [1]
+            content {
+              default_size_inspection_limit = request_body.value.cognito_user_pool.default_size_inspection_limit
+            }
+          }
+
+          dynamic "verified_access_instance" {
+            for_each = lookup(request_body.value, "verified_access_instance", null) == null ? [] : [1]
+            content {
+              default_size_inspection_limit = request_body.value.verified_access_instance.default_size_inspection_limit
+            }
+          }
+        }
+      }
+    }
+  }
+
   dynamic "rule" {
     for_each = var.rule
     content {

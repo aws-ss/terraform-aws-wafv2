@@ -19,6 +19,12 @@ variable "default_action" {
   type        = string
 }
 
+variable "association_config" {
+  description = "(Optional) Customizes the request body that your protected resource forward to AWS WAF for inspection."
+  type        = map(any)
+  default     = null
+}
+
 variable "visibility_config" {
   description = "(Required) Defines and enables Amazon CloudWatch metrics and web request sample collection."
   type        = map(string)
