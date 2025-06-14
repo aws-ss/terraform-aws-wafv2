@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.10.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.10.0...v3.10.1) (2025-06-14)
+
+
+### Bug Fixes
+
+* Support multiple custom response body/header ([d901f3e](https://github.com/aws-ss/terraform-aws-wafv2/commit/d901f3ec2cc08c1aa32fe93a8c250d1c64bdc445))
+
 ## [3.10.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.9.0...v3.10.0) (2025-06-03)
 
 
