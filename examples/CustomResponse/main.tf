@@ -22,7 +22,11 @@ module "wafv2" {
         response_code = 404
         response_header = [
           {
-            name  = "X-Custom-Response-Header-01"
+            name  = "X-Custom-Response-Header01"
+            value = "Not authorized"
+          },
+          {
+            name  = "X-Custom-Response-Header02"
             value = "Not authorized"
           }
         ]
@@ -38,11 +42,18 @@ module "wafv2" {
     }
   ]
 
-  custom_response_body = {
-    key          = "CustomResponseBody",
-    content      = "Not authorized",
-    content_type = "TEXT_PLAIN"
-  }
+  custom_response_body = [
+    {
+      key          = "CustomResponseBody1",
+      content      = "Not authorized1",
+      content_type = "TEXT_PLAIN"
+    },
+    {
+      key          = "CustomResponseBody2",
+      content      = "Not authorized2",
+      content_type = "TEXT_PLAIN"
+    }
+  ]
 
   visibility_config = {
     cloudwatch_metrics_enabled = false

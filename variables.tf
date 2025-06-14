@@ -32,8 +32,12 @@ variable "visibility_config" {
 
 variable "custom_response_body" {
   description = "(Optional) Defines custom response bodies that can be referenced by custom_response actions."
-  type        = map(any)
-  default     = {}
+  type = list(object({
+    content      = string
+    content_type = string
+    key          = string
+  }))
+  default = []
 }
 
 variable "captcha_config" {

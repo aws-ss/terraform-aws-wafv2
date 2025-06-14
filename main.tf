@@ -77,9 +77,11 @@ resource "aws_wafv2_web_acl" "this" {
 
                   dynamic "response_header" {
                     for_each = lookup(custom_response.value, "response_header", [])
+                    iterator = response_header
+
                     content {
-                      name  = lookup(response_header.value, "name")
-                      value = lookup(response_header.value, "value")
+                      name  = response_header.value.name
+                      value = response_header.value.value
                     }
                   }
                 }
@@ -12239,11 +12241,13 @@ resource "aws_wafv2_web_acl" "this" {
   }
 
   dynamic "custom_response_body" {
-    for_each = var.custom_response_body
+    for_each = var.custom_response_body == null ? [] : var.custom_response_body
+    iterator = custom_response_body
+
     content {
-      content      = var.custom_response_body.content
-      content_type = var.custom_response_body.content_type
-      key          = var.custom_response_body.key
+      content      = custom_response_body.value.content
+      content_type = custom_response_body.value.content_type
+      key          = custom_response_body.value.key
     }
   }
 
