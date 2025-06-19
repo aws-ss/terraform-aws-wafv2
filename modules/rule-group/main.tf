@@ -61,6 +61,21 @@ resource "aws_wafv2_rule_group" "this" {
       }
 
       statement {
+        dynamic "asn_match_statement" {
+          for_each = lookup(rule.value, "asn_match_statement", null) == null ? [] : [lookup(rule.value, "asn_match_statement")]
+          content {
+            asn_list = lookup(asn_match_statement.value, "asn_list")
+
+            dynamic "forwarded_ip_config" {
+              for_each = lookup(asn_match_statement.value, "forwarded_ip_config", null) == null ? [] : [lookup(asn_match_statement.value, "forwarded_ip_config")]
+              content {
+                fallback_behavior = lookup(forwarded_ip_config.value, "fallback_behavior")
+                header_name       = lookup(forwarded_ip_config.value, "header_name")
+              }
+            }
+          }
+        }
+
         dynamic "ip_set_reference_statement" {
           for_each = lookup(rule.value, "ip_set_reference_statement", null) == null ? [] : [lookup(rule.value, "ip_set_reference_statement")]
           content {

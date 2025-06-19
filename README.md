@@ -11,6 +11,7 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 - Logging Configuration
 - Statements
   - AndStatement
+  - AsnMatchStatement
   - ByteMatchStatement
   - GeoMatchStatement
   - IPSetReferenceStatement
