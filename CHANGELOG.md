@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.11.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.10.1...v3.11.0) (2025-06-19)
+
+
+### Features
+
+* Support ASN match rule statement ([97b8b8b](https://github.com/aws-ss/terraform-aws-wafv2/commit/97b8b8bd4729c1b3a9e983d362f3055fd68a255f))
+
 ### [3.10.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.10.0...v3.10.1) (2025-06-14)
 
 
