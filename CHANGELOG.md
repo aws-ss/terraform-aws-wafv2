@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.11.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.11.0...v3.11.1) (2025-07-02)
+
+
+### Bug Fixes
+
+* Update providers version ([3efb560](https://github.com/aws-ss/terraform-aws-wafv2/commit/3efb56018576f2866774e9f79b861787610e2322))
+
 ## [3.11.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.10.1...v3.11.0) (2025-06-19)
 
 
