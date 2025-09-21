@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.12.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.11.1...v3.12.0) (2025-09-21)
+
+
+### Features
+
+* Add 'AWSManagedRulesAntiDDoSRuleSet' ([74b5fd1](https://github.com/aws-ss/terraform-aws-wafv2/commit/74b5fd1a3820f89672b504c631fd6aac655b2219))
+
 ### [3.11.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.11.0...v3.11.1) (2025-07-02)
 
 
