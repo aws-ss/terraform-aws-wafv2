@@ -20,6 +20,7 @@ A Terraform module that creates Web Application Firewall (WAFV2).
     - AWSManagedRulesACFPRuleSet
     - AWSManagedRulesATPRuleSet
     - AWSManagedRulesBotControlRuleSet
+    - AWSManagedRulesAntiDDoSRuleSet
   - NotStatement
   - OrStatement
   - RateBasedStatement

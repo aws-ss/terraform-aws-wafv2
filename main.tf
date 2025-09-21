@@ -219,6 +219,35 @@ resource "aws_wafv2_web_acl" "this" {
                     inspection_level        = upper(lookup(aws_managed_rules_bot_control_rule_set.value, "inspection_level", "COMMON"))
                   }
                 }
+
+                dynamic "aws_managed_rules_anti_ddos_rule_set" {
+                  for_each = lookup(managed_rule_group_configs.value, "aws_managed_rules_anti_ddos_rule_set", null) == null ? [] : [lookup(managed_rule_group_configs.value, "aws_managed_rules_anti_ddos_rule_set")]
+                  content {
+                    sensitivity_to_block = upper(lookup(aws_managed_rules_anti_ddos_rule_set.value, "sensitivity_to_block", "LOW"))
+
+                    dynamic "client_side_action_config" {
+                      for_each = lookup(aws_managed_rules_anti_ddos_rule_set.value, "client_side_action_config") == null ? [] : [lookup(aws_managed_rules_anti_ddos_rule_set.value, "client_side_action_config")]
+                      content {
+                        dynamic "challenge" {
+                          for_each = lookup(client_side_action_config.value, "challenge", null) == null ? [] : [lookup(client_side_action_config.value, "challenge")]
+                          content {
+                            sensitivity     = upper(lookup(challenge.value, "sensitivity", "HIGH"))
+                            usage_of_action = upper(lookup(challenge.value, "usage_of_action"))
+
+                            dynamic "exempt_uri_regular_expression" {
+                              for_each = lookup(challenge.value, "exempt_uri_regular_expression", null) == null ? [] : lookup(challenge.value, "exempt_uri_regular_expression")
+                              iterator = exempt_uri_regular_expression
+
+                              content {
+                                regex_string = lookup(exempt_uri_regular_expression.value, "regex_string")
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
 
