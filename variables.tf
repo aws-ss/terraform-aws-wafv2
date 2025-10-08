@@ -19,6 +19,19 @@ variable "default_action" {
   type        = string
 }
 
+variable "default_custom_response" {
+  description = "(Optional) Customise the response when the default action is block"
+  type = object({
+    response_code            = optional(number, 403)
+    custom_response_body_key = optional(string)
+    response_header          = optional(list(object({
+      name  = string
+      value = string
+    })))
+  })
+  default = null
+}
+
 variable "association_config" {
   description = "(Optional) Customizes the request body that your protected resource forward to AWS WAF for inspection."
   type        = map(any)

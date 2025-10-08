@@ -13,6 +13,16 @@ module "wafv2" {
   name           = "WebACL01"
   scope          = "REGIONAL"
   default_action = "block"
+  default_custom_response = {
+    response_code            = 418
+    custom_response_body_key = "CustomResponseBody1"
+    response_header = [
+      {
+        name  = "X-Teapot-Protocol"
+        value = "true"
+      }
+    ]
+  }
   rule = [
     {
       name     = "Rule01"
