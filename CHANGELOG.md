@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [3.12.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.12.0...v3.12.1) (2025-10-22)
+
+
+### Bug Fixes
+
+* Correct property name from 'statements' to 'statement' ([25c1670](https://github.com/aws-ss/terraform-aws-wafv2/commit/25c1670e5650a3c39cad36e2835d69d9bc81dab8))
+
 ## [3.12.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.11.1...v3.12.0) (2025-09-21)
 
 
