@@ -11577,7 +11577,7 @@ resource "aws_wafv2_web_acl" "this" {
                   for_each = lookup(scope_down_statement.value, "not_statement", null) == null ? [] : [lookup(scope_down_statement.value, "not_statement")]
                   content {
                     dynamic "statement" {
-                      for_each = lookup(not_statement.value, "statements")
+                      for_each = lookup(not_statement.value, "statement")
                       content {
                         dynamic "geo_match_statement" {
                           for_each = lookup(statement.value, "geo_match_statement", null) == null ? [] : [lookup(statement.value, "geo_match_statement")]
