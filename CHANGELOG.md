@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.13.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.12.1...v3.13.0) (2025-10-23)
+
+
+### Features
+
+* extending custom response handling ([9cba1cc](https://github.com/aws-ss/terraform-aws-wafv2/commit/9cba1cc811b8c7a40bfc857884263729085ae7df))
+* Extending custom response handling ([7daddea](https://github.com/aws-ss/terraform-aws-wafv2/commit/7daddeabe60c5b5f387badeae7e0a4abcf91145f))
+
 ### [3.12.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.12.0...v3.12.1) (2025-10-22)
 
 
