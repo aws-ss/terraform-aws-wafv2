@@ -26,7 +26,21 @@ module "wafv2" {
         rule_action_override = [
           {
             name          = "NoUserAgent_HEADER"
-            action_to_use = "captcha"
+            action_to_use = "block"
+            custom_response = {
+              response_code            = 400
+              custom_response_body_key = "CustomResponseBody2"
+              response_header = [
+                {
+                  name  = "X-Custom-Response-Header01"
+                  value = "Not authorized"
+                },
+                {
+                  name  = "X-Custom-Response-Header02"
+                  value = "Not authorized"
+                }
+              ]
+            }
           },
           {
             name          = "UserAgent_BadBots_HEADER"
@@ -49,6 +63,19 @@ module "wafv2" {
         metric_name                = "cloudwatch_metric_name"
         sampled_requests_enabled   = false
       }
+    }
+  ]
+
+  custom_response_body = [
+    {
+      key          = "CustomResponseBody1",
+      content      = "Not authorized1",
+      content_type = "TEXT_PLAIN"
+    },
+    {
+      key          = "CustomResponseBody2",
+      content      = "Not authorized2",
+      content_type = "TEXT_PLAIN"
     }
   ]
   visibility_config = {

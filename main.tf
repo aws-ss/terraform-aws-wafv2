@@ -11,7 +11,25 @@ resource "aws_wafv2_web_acl" "this" {
     }
     dynamic "block" {
       for_each = var.default_action == "block" ? [1] : []
-      content {}
+      content {
+        dynamic "custom_response" {
+          for_each = var.default_custom_response == null ? [] : [var.default_custom_response]
+          content {
+            custom_response_body_key = lookup(custom_response.value, "custom_response_body_key", null)
+            response_code            = lookup(custom_response.value, "response_code", 403)
+
+            dynamic "response_header" {
+              for_each = lookup(custom_response.value, "response_header", [])
+              iterator = response_header
+
+              content {
+                name  = response_header.value.name
+                value = response_header.value.value
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -265,7 +283,25 @@ resource "aws_wafv2_web_acl" "this" {
                     }
                     dynamic "block" {
                       for_each = action_to_use.value == "block" ? [1] : []
-                      content {}
+                      content {
+                        dynamic "custom_response" {
+                          for_each = lookup(rule_action_override.value, "custom_response", null) == null ? [] : [lookup(rule_action_override.value, "custom_response")]
+                          content {
+                            custom_response_body_key = lookup(custom_response.value, "custom_response_body_key", null)
+                            response_code            = lookup(custom_response.value, "response_code", 403)
+
+                            dynamic "response_header" {
+                              for_each = lookup(custom_response.value, "response_header", [])
+                              iterator = response_header
+
+                              content {
+                                name  = response_header.value.name
+                                value = response_header.value.value
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                     dynamic "captcha" {
                       for_each = action_to_use.value == "captcha" ? [1] : []
