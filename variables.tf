@@ -72,8 +72,71 @@ variable "token_domains" {
 }
 
 variable "rule" {
-  description = "(Optional) Rule blocks used to identify the web requests that you want to allow, block, or count."
+  description = <<-EOF
+    (Optional) A list of rule objects.
+    Currently untyped. Typable, but it would take around 8000 lines of object definition!
+    The objects it supports look rather like the objects supported by the [AWS API](https://docs.aws.amazon.com/waf/latest/APIReference/API_Rule.html).
+
+    Each rule supports the following keys:
+
+    ```
+      name            = string
+      priority        = number
+      action_override = optional(string) # required for managed_rule_group_statements
+      action          = optional(string) # required for other kinds of statements 
+      # Custom response configuration for block actions
+      custom_response = optional(object({
+        custom_response_body_key = optional(string)
+        response_code            = optional(number)
+        response_header = optional(list(object({
+          name  = string
+          value = string
+        })), [])
+      }))
+      # Rule labels
+      rule_label = optional(list(object({
+        name = string
+      })))
+      # Visibility configuration
+      visibility_config = object({
+        cloudwatch_metrics_enabled = bool
+        metric_name                = string
+        sampled_requests_enabled   = bool
+      })
+    ```
+
+    It also supports most, if not all, of the WAFv2 [Statements](https://docs.aws.amazon.com/waf/latest/APIReference/API_Statement.html).
+    Each of these are introduced with one of the following `statement_type` keys:
+
+    - asn_match_statement
+    - byte_match_statement
+    - geo_match_statement
+    - ip_set_reference_statement
+    - label_match_statement
+    - managed_rule_group_statement
+    - rate_based_statement
+    - regex_match_statement
+    - regex_pattern_set_reference_statement
+    - rule_group_reference_statement
+    - size_constraint_statement
+    - sqli_match_statement
+    - xss_match_statement
+
+    `managed_rule_group_statement`s and `rule_group_reference_statement`s cannot be nested in not_statements
+    Other rule types can be.
+    
+    `and_statement`s and `or_statement`s contain a `statements` list.
+    All of the above types of rule, including `not_statement`s, can be nested in these.
+    Neither `and_statement`s nor `or_statement`s can be nested within `and_statement`s or `or_statement`s
+
+    Each rule can define only one type of statement.
+
+    Rules are given priorities based on their list order.
+
+    See this module's examples for more details.
+  EOF
   type        = any
+  default     = []
 }
 
 variable "tags" {
