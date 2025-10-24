@@ -11,7 +11,6 @@ variables {
     sampled_requests_enabled   = true
   }
   resource_arn = []
-  rule         = []
 }
 
 # expected result from simple, default settings
