@@ -24,7 +24,7 @@ variable "default_custom_response" {
   type = object({
     response_code            = optional(number, 403)
     custom_response_body_key = optional(string)
-    response_header          = optional(list(object({
+    response_header = optional(list(object({
       name  = string
       value = string
     })))
@@ -82,7 +82,7 @@ variable "rule" {
     # Custom response configuration for block actions
     custom_response = optional(object({
       custom_response_body_key = optional(string)
-      response_code            = optional(number)
+      response_code            = optional(number, 403)
       response_header = optional(list(object({
         name  = string
         value = string
@@ -1647,7 +1647,7 @@ variable "rule" {
 
     managed_rule_group_statement = optional(object({
       name        = string
-      vendor_name = optional(string)
+      vendor_name = optional(string, "AWS")
       version     = optional(string)
       managed_rule_group_configs = optional(list(object({
         aws_managed_rules_acfp_rule_set = optional(object({
@@ -1707,7 +1707,6 @@ variable "rule" {
         name          = string
         action_to_use = string
       })))
-      # got_to_here
       scope_down_statement = optional(object({
         # asn_match_statement is not supported
         byte_match_statement = optional(object({
