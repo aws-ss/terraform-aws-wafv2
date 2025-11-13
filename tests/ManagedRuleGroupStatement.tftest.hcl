@@ -1044,3 +1044,255 @@ run "test_managed_rule_with_anti_ddos_configs" {
     error_message = "Should enable usage of action for challenge configuration"
   }
 }
+
+run "test_managed_rule_with_custom_response" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name            = "CustomResponseRule"
+        priority        = 65
+        override_action = "none"
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          rule_action_override = [
+            {
+              name          = "NoUserAgent_HEADER"
+              action_to_use = "block"
+              custom_response = {
+                response_code            = 400
+                custom_response_body_key = "CustomResponseBody1"
+                response_header = [
+                  {
+                    name  = "X-Custom-Response-Header01"
+                    value = "Not authorized"
+                  },
+                  {
+                    name  = "X-Custom-Response-Header02"
+                    value = "Access denied"
+                  }
+                ]
+              }
+            },
+            {
+              name          = "UserAgent_BadBots_HEADER"
+              action_to_use = "block"
+              custom_response = {
+                response_code            = 403
+                custom_response_body_key = "CustomResponseBody2"
+              }
+            }
+          ]
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "CustomResponseRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+
+    custom_response_body = [
+      {
+        key          = "CustomResponseBody1"
+        content      = "Custom error message 1"
+        content_type = "TEXT_PLAIN"
+      },
+      {
+        key          = "CustomResponseBody2"
+        content      = "Custom error message 2"
+        content_type = "TEXT_PLAIN"
+      }
+    ]
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].rule_action_override) == 2
+    ])
+    error_message = "Should have two rule action overrides configured"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "NoUserAgent_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        override.action_to_use[0].block != null
+      ])
+    ])
+    error_message = "NoUserAgent_HEADER should be overridden with block action"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "NoUserAgent_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].block) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response) > 0
+      ])
+    ])
+    error_message = "NoUserAgent_HEADER should have custom response configured"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "NoUserAgent_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].block) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response) > 0 &&
+        override.action_to_use[0].block[0].custom_response[0].response_code == 400
+      ])
+    ])
+    error_message = "Should have response code 400 for NoUserAgent_HEADER custom response"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "NoUserAgent_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].block) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response) > 0 &&
+        override.action_to_use[0].block[0].custom_response[0].custom_response_body_key == "CustomResponseBody1"
+      ])
+    ])
+    error_message = "Should reference CustomResponseBody1 for NoUserAgent_HEADER custom response"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "NoUserAgent_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].block) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response[0].response_header) == 2
+      ])
+    ])
+    error_message = "Should have two response headers for NoUserAgent_HEADER custom response"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "UserAgent_BadBots_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].block) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response) > 0 &&
+        override.action_to_use[0].block[0].custom_response[0].response_code == 403
+      ])
+    ])
+    error_message = "Should have response code 403 for UserAgent_BadBots_HEADER custom response"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "UserAgent_BadBots_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].block) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response) > 0 &&
+        override.action_to_use[0].block[0].custom_response[0].custom_response_body_key == "CustomResponseBody2"
+      ])
+    ])
+    error_message = "Should reference CustomResponseBody2 for UserAgent_BadBots_HEADER custom response"
+  }
+}
+
+run "test_managed_rule_with_custom_response_minimal" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name            = "MinimalCustomResponseRule"
+        priority        = 70
+        override_action = "none"
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          rule_action_override = [
+            {
+              name          = "NoUserAgent_HEADER"
+              action_to_use = "block"
+              custom_response = {
+                # Only response_code specified, others should use defaults
+                response_code = 404
+              }
+            }
+          ]
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "MinimalCustomResponseRule"
+          sampled_requests_enabled   = false
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "NoUserAgent_HEADER" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].block) > 0 &&
+        length(override.action_to_use[0].block[0].custom_response) > 0 &&
+        override.action_to_use[0].block[0].custom_response[0].response_code == 404
+      ])
+    ])
+    error_message = "Should have custom response code 404 configured"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].rule_action_override) == 1
+    ])
+    error_message = "Should have one rule action override configured"
+  }
+}

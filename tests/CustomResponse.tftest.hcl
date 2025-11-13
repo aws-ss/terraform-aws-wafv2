@@ -329,3 +329,238 @@ run "test_custom_response_with_headers" {
     error_message = "Should have X-Request-ID header"
   }
 }
+
+run "test_default_custom_response_basic" {
+  command = plan
+
+  variables {
+    default_action = "block"
+    default_custom_response = {
+      response_code = 418
+      response_header = [
+        {
+          name  = "X-Default-Block"
+          value = "true"
+        }
+      ]
+    }
+  }
+
+  assert {
+    condition = anytrue([
+      for block in aws_wafv2_web_acl.this.default_action[0].block :
+      length(block.custom_response) > 0 &&
+      block.custom_response[0].response_code == 418
+    ])
+    error_message = "Default action should have custom response with code 418"
+  }
+
+  assert {
+    condition = anytrue([
+      for block in aws_wafv2_web_acl.this.default_action[0].block :
+      length(block.custom_response) > 0 &&
+      anytrue([
+        for header in block.custom_response[0].response_header :
+        header.name == "X-Default-Block" && header.value == "true"
+      ])
+    ])
+    error_message = "Default action should have X-Default-Block header"
+  }
+}
+
+run "test_default_custom_response_with_body" {
+  command = plan
+
+  variables {
+    default_action = "block"
+    custom_response_body = [
+      {
+        key          = "DefaultBlockBody"
+        content      = "Access denied by default policy"
+        content_type = "TEXT_PLAIN"
+      }
+    ]
+    default_custom_response = {
+      response_code            = 403
+      custom_response_body_key = "DefaultBlockBody"
+      response_header = [
+        {
+          name  = "X-Block-Reason"
+          value = "default-policy"
+        },
+        {
+          name  = "X-Retry-After"
+          value = "3600"
+        }
+      ]
+    }
+  }
+
+  assert {
+    condition = anytrue([
+      for block in aws_wafv2_web_acl.this.default_action[0].block :
+      length(block.custom_response) > 0 &&
+      block.custom_response[0].response_code == 403 &&
+      block.custom_response[0].custom_response_body_key == "DefaultBlockBody"
+    ])
+    error_message = "Default action should reference DefaultBlockBody with 403 response code"
+  }
+
+  assert {
+    condition = anytrue([
+      for body in aws_wafv2_web_acl.this.custom_response_body :
+      body.key == "DefaultBlockBody" && body.content == "Access denied by default policy"
+    ])
+    error_message = "Should have DefaultBlockBody with correct content"
+  }
+
+  assert {
+    condition = anytrue([
+      for block in aws_wafv2_web_acl.this.default_action[0].block :
+      length(block.custom_response) > 0 &&
+      length(block.custom_response[0].response_header) == 2
+    ])
+    error_message = "Default action should have exactly 2 response headers"
+  }
+}
+
+run "test_default_custom_response_combined_with_rule_custom_response" {
+  command = plan
+
+  variables {
+    default_action = "block"
+    custom_response_body = [
+      {
+        key          = "DefaultBlockBody"
+        content      = "Default block message"
+        content_type = "TEXT_PLAIN"
+      },
+      {
+        key          = "RuleBlockBody"
+        content      = "Rule-specific block message"
+        content_type = "TEXT_PLAIN"
+      }
+    ]
+    default_custom_response = {
+      response_code            = 403
+      custom_response_body_key = "DefaultBlockBody"
+      response_header = [
+        {
+          name  = "X-Default-Block"
+          value = "true"
+        }
+      ]
+    }
+    rule = [
+      {
+        name     = "SpecificRule"
+        priority = 1
+        action   = "block"
+        custom_response = {
+          response_code            = 429
+          custom_response_body_key = "RuleBlockBody"
+          response_header = [
+            {
+              name  = "X-Rule-Block"
+              value = "rate-limit"
+            }
+          ]
+        }
+        rate_based_statement = {
+          aggregate_key_type    = "IP"
+          limit                 = 100
+          evaluation_window_sec = 300
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "SpecificRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition = anytrue([
+      for block in aws_wafv2_web_acl.this.default_action[0].block :
+      length(block.custom_response) > 0 &&
+      block.custom_response[0].response_code == 403 &&
+      block.custom_response[0].custom_response_body_key == "DefaultBlockBody"
+    ])
+    error_message = "Default action should use DefaultBlockBody with 403 response"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      rule.name == "SpecificRule" ?
+      length(rule.action) > 0 && length(rule.action[0].block) > 0 &&
+      length(rule.action[0].block[0].custom_response) > 0 &&
+      rule.action[0].block[0].custom_response[0].response_code == 429 &&
+      rule.action[0].block[0].custom_response[0].custom_response_body_key == "RuleBlockBody" : false
+    ])
+    error_message = "Rule should use RuleBlockBody with 429 response"
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.custom_response_body) == 2
+    error_message = "Should have both default and rule-specific custom response bodies"
+  }
+}
+
+run "test_default_custom_response_only_response_code" {
+  command = plan
+
+  variables {
+    default_action = "block"
+    default_custom_response = {
+      response_code = 451
+    }
+  }
+
+  assert {
+    condition = anytrue([
+      for block in aws_wafv2_web_acl.this.default_action[0].block :
+      length(block.custom_response) > 0 &&
+      block.custom_response[0].response_code == 451 &&
+      block.custom_response[0].custom_response_body_key == null
+    ])
+    error_message = "Default action should have only response code 451 without body key"
+  }
+
+  assert {
+    condition = anytrue([
+      for block in aws_wafv2_web_acl.this.default_action[0].block :
+      length(block.custom_response) > 0 &&
+      length(block.custom_response[0].response_header) == 0
+    ])
+    error_message = "Default action should have no response headers when not specified"
+  }
+}
+
+run "test_no_default_custom_response_when_action_allow" {
+  command = plan
+
+  variables {
+    default_action = "allow"
+    default_custom_response = {
+      response_code = 403
+      response_header = [
+        {
+          name  = "X-Should-Not-Appear"
+          value = "true"
+        }
+      ]
+    }
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.default_action[0].allow) > 0
+    error_message = "Default action should be allow"
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.default_action[0].block) == 0
+    error_message = "Should not have block action when default_action is allow"
+  }
+}

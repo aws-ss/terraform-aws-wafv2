@@ -27,7 +27,7 @@ variable "default_custom_response" {
     response_header = optional(list(object({
       name  = string
       value = string
-    })))
+    })), [])
   })
   default = null
 }
@@ -1706,6 +1706,14 @@ variable "rule" {
       rule_action_override = optional(list(object({
         name          = string
         action_to_use = string
+        custom_response = optional(object({
+          custom_response_body_key = optional(string)
+          response_code            = optional(number, 403)
+          response_header = optional(list(object({
+            name  = string
+            value = string
+          })), [])
+        }))
       })))
       scope_down_statement = optional(object({
         # asn_match_statement is not supported
