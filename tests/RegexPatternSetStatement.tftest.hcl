@@ -52,7 +52,7 @@ run "test_regex_pattern_set_reference_basic" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].regex_pattern_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].regex_pattern_set_reference_statement) > 0
     ])
     error_message = "Regex pattern set reference statement should be configured"
   }
@@ -69,7 +69,7 @@ run "test_regex_pattern_set_reference_basic" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].text_transformation) == 1
     ])
     error_message = "Text transformation should be configured"
@@ -124,7 +124,7 @@ run "test_regex_pattern_set_uri_path" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].regex_pattern_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].regex_pattern_set_reference_statement) > 0
     ])
     error_message = "Regex pattern set reference statement should be configured"
   }
@@ -133,7 +133,7 @@ run "test_regex_pattern_set_uri_path" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].text_transformation) == 2
     ])
     error_message = "Should have two text transformations"
@@ -184,7 +184,7 @@ run "test_regex_pattern_set_query_string" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].regex_pattern_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].regex_pattern_set_reference_statement) > 0
     ])
     error_message = "Regex pattern set reference statement should be configured"
   }
@@ -193,7 +193,7 @@ run "test_regex_pattern_set_query_string" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match[0].query_string) > 0
     ])
@@ -235,7 +235,7 @@ run "test_regex_pattern_set_request_body" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].regex_pattern_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].regex_pattern_set_reference_statement) > 0
     ])
     error_message = "Regex pattern set reference statement should be configured"
   }
@@ -244,7 +244,7 @@ run "test_regex_pattern_set_request_body" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match[0].body) > 0
     ])
@@ -304,7 +304,7 @@ run "test_regex_pattern_set_headers_inspection" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].regex_pattern_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].regex_pattern_set_reference_statement) > 0
     ])
     error_message = "Regex pattern set reference statement should be configured"
   }
@@ -313,7 +313,7 @@ run "test_regex_pattern_set_headers_inspection" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match[0].headers) > 0
     ])
@@ -324,7 +324,7 @@ run "test_regex_pattern_set_headers_inspection" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].text_transformation) == 2
     ])
     error_message = "Should have two text transformations"
@@ -371,7 +371,7 @@ run "test_regex_pattern_set_cookies_inspection" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].regex_pattern_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].regex_pattern_set_reference_statement) > 0
     ])
     error_message = "Regex pattern set reference statement should be configured"
   }
@@ -380,7 +380,7 @@ run "test_regex_pattern_set_cookies_inspection" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match[0].cookies) > 0
     ])
@@ -444,7 +444,7 @@ run "test_regex_pattern_set_multiple_transformations" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].regex_pattern_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].regex_pattern_set_reference_statement) > 0
     ])
     error_message = "Regex pattern set reference statement should be configured"
   }
@@ -453,7 +453,7 @@ run "test_regex_pattern_set_multiple_transformations" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].field_to_match[0].single_query_argument) > 0
     ])
@@ -464,7 +464,7 @@ run "test_regex_pattern_set_multiple_transformations" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].regex_pattern_set_reference_statement != null &&
+      length(rule.statement[0].regex_pattern_set_reference_statement) > 0 &&
       length(rule.statement[0].regex_pattern_set_reference_statement[0].text_transformation) == 4
     ])
     error_message = "Should have four text transformations"

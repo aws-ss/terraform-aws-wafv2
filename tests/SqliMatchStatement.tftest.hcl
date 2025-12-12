@@ -106,7 +106,7 @@ run "sqli_match_query_string_url_decode" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].sqli_match_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].sqli_match_statement) > 0
     ])
     error_message = "SQLI match statement should be configured"
   }
@@ -115,7 +115,7 @@ run "sqli_match_query_string_url_decode" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].sqli_match_statement != null &&
+      length(rule.statement[0].sqli_match_statement) > 0 &&
       length(rule.statement[0].sqli_match_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].sqli_match_statement[0].field_to_match[0].query_string) > 0
     ])
@@ -126,7 +126,7 @@ run "sqli_match_query_string_url_decode" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].sqli_match_statement != null &&
+      length(rule.statement[0].sqli_match_statement) > 0 &&
       length(rule.statement[0].sqli_match_statement[0].text_transformation) > 0 &&
       anytrue([
         for transform in rule.statement[0].sqli_match_statement[0].text_transformation :

@@ -52,7 +52,7 @@ run "test_size_constraint_statement_basic" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -69,7 +69,7 @@ run "test_size_constraint_statement_basic" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].text_transformation) == 1
     ])
     error_message = "Text transformation should be configured"
@@ -120,7 +120,7 @@ run "test_size_constraint_statement_uri_path_large" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -129,7 +129,7 @@ run "test_size_constraint_statement_uri_path_large" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].text_transformation) == 2
     ])
     error_message = "Should have two text transformations"
@@ -139,7 +139,7 @@ run "test_size_constraint_statement_uri_path_large" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match[0].uri_path) > 0
     ])
@@ -192,7 +192,7 @@ run "test_size_constraint_statement_query_string_limit" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -201,7 +201,7 @@ run "test_size_constraint_statement_query_string_limit" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match[0].query_string) > 0
     ])
@@ -244,7 +244,7 @@ run "test_size_constraint_statement_request_body_small" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -253,7 +253,7 @@ run "test_size_constraint_statement_request_body_small" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match[0].body) > 0
     ])
@@ -310,7 +310,7 @@ run "test_size_constraint_statement_headers_not_equal" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -319,7 +319,7 @@ run "test_size_constraint_statement_headers_not_equal" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match[0].headers) > 0
     ])
@@ -377,7 +377,7 @@ run "test_size_constraint_statement_cookies_less_equal" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -386,7 +386,7 @@ run "test_size_constraint_statement_cookies_less_equal" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match[0].cookies) > 0
     ])
@@ -451,7 +451,7 @@ run "test_size_constraint_statement_all_operators" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -460,7 +460,7 @@ run "test_size_constraint_statement_all_operators" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match[0].single_query_argument) > 0
     ])
@@ -471,7 +471,7 @@ run "test_size_constraint_statement_all_operators" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].text_transformation) == 4
     ])
     error_message = "Should have four text transformations"
@@ -521,7 +521,7 @@ run "test_size_constraint_statement_method_zero" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].size_constraint_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].size_constraint_statement) > 0
     ])
     error_message = "Size constraint statement should be configured"
   }
@@ -530,7 +530,7 @@ run "test_size_constraint_statement_method_zero" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].field_to_match[0].method) > 0
     ])
@@ -549,7 +549,7 @@ run "test_size_constraint_statement_method_zero" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].size_constraint_statement != null &&
+      length(rule.statement[0].size_constraint_statement) > 0 &&
       length(rule.statement[0].size_constraint_statement[0].text_transformation) == 1
     ])
     error_message = "Should have one text transformation with NONE type"

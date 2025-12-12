@@ -55,7 +55,7 @@ run "basic_rate_based_statement_forwarded_ip" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].rate_based_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].rate_based_statement) > 0
     ])
     error_message = "Rate based statement should be configured"
   }
@@ -64,7 +64,7 @@ run "basic_rate_based_statement_forwarded_ip" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].limit == 1000
     ])
     error_message = "Rate limit should be 1000"
@@ -74,7 +74,7 @@ run "basic_rate_based_statement_forwarded_ip" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].aggregate_key_type == "FORWARDED_IP"
     ])
     error_message = "Aggregate key type should be FORWARDED_IP"
@@ -84,7 +84,7 @@ run "basic_rate_based_statement_forwarded_ip" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].evaluation_window_sec == 120
     ])
     error_message = "Evaluation window should be 120 seconds"
@@ -94,7 +94,7 @@ run "basic_rate_based_statement_forwarded_ip" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       length(rule.statement[0].rate_based_statement[0].forwarded_ip_config) > 0 &&
       rule.statement[0].rate_based_statement[0].forwarded_ip_config[0].fallback_behavior == "MATCH"
     ])
@@ -105,7 +105,7 @@ run "basic_rate_based_statement_forwarded_ip" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       length(rule.statement[0].rate_based_statement[0].forwarded_ip_config) > 0 &&
       rule.statement[0].rate_based_statement[0].forwarded_ip_config[0].header_name == "X-Forwarded-For"
     ])
@@ -157,7 +157,7 @@ run "rate_based_statement_constant_with_scope_down" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].aggregate_key_type == "CONSTANT"
     ])
     error_message = "Aggregate key type should be CONSTANT"
@@ -167,7 +167,7 @@ run "rate_based_statement_constant_with_scope_down" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].limit == 100
     ])
     error_message = "Rate limit should be 100"
@@ -177,7 +177,7 @@ run "rate_based_statement_constant_with_scope_down" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].evaluation_window_sec == 300
     ])
     error_message = "Evaluation window should be 300 seconds"
@@ -187,9 +187,9 @@ run "rate_based_statement_constant_with_scope_down" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
-      rule.statement[0].rate_based_statement[0].scope_down_statement[0].geo_match_statement != null
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].geo_match_statement) > 0
     ])
     error_message = "Should have geo match scope down statement"
   }
@@ -233,7 +233,7 @@ run "rate_based_statement_ip_aggregate_type" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].aggregate_key_type == "IP"
     ])
     error_message = "Aggregate key type should be IP"
@@ -243,7 +243,7 @@ run "rate_based_statement_ip_aggregate_type" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].limit == 500
     ])
     error_message = "Rate limit should be 500"
@@ -253,7 +253,7 @@ run "rate_based_statement_ip_aggregate_type" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].evaluation_window_sec == 60
     ])
     error_message = "Evaluation window should be 60 seconds"
@@ -263,7 +263,7 @@ run "rate_based_statement_ip_aggregate_type" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       length(rule.statement[0].rate_based_statement[0].forwarded_ip_config) == 0
     ])
     error_message = "Should not have forwarded IP config for IP aggregate type"
@@ -316,7 +316,7 @@ run "rate_based_statement_custom_keys_simple" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].aggregate_key_type == "CUSTOM_KEYS"
     ])
     error_message = "Aggregate key type should be CUSTOM_KEYS"
@@ -326,7 +326,7 @@ run "rate_based_statement_custom_keys_simple" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       length(rule.statement[0].rate_based_statement[0].custom_key) == 2
     ])
     error_message = "Should have 2 custom keys"
@@ -336,7 +336,7 @@ run "rate_based_statement_custom_keys_simple" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].limit == 200
     ])
     error_message = "Rate limit should be 200"
@@ -424,7 +424,7 @@ run "rate_based_statement_multiple_rules_different_types" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "RateLimit_IP" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].aggregate_key_type == "IP"
     ])
     error_message = "First rule should use IP aggregate type"
@@ -435,7 +435,7 @@ run "rate_based_statement_multiple_rules_different_types" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "RateLimit_ForwardedIP" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].aggregate_key_type == "FORWARDED_IP"
     ])
     error_message = "Second rule should use FORWARDED_IP aggregate type"
@@ -446,7 +446,7 @@ run "rate_based_statement_multiple_rules_different_types" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "RateLimit_IP" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].limit == 1000
     ])
     error_message = "First rule limit should be 1000"
@@ -457,7 +457,7 @@ run "rate_based_statement_multiple_rules_different_types" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "RateLimit_ForwardedIP" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].limit == 500
     ])
     error_message = "Second rule limit should be 500"
@@ -535,7 +535,7 @@ run "rate_based_statement_with_comprehensive_custom_keys" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       length(rule.statement[0].rate_based_statement[0].custom_key) == 4
     ])
     error_message = "Should have 4 custom keys (header, query_string, query_argument, forwarded_ip)"
@@ -545,7 +545,7 @@ run "rate_based_statement_with_comprehensive_custom_keys" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].evaluation_window_sec == 300
     ])
     error_message = "Evaluation window should be 240 seconds"
@@ -555,7 +555,7 @@ run "rate_based_statement_with_comprehensive_custom_keys" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].rate_based_statement != null &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
       rule.statement[0].rate_based_statement[0].limit == 150
     ])
     error_message = "Rate limit should be 150"

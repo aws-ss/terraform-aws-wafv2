@@ -179,7 +179,7 @@ run "test_example_and_statement" {
       length(rule.statement[0].and_statement[0].statement[0].not_statement[0].statement) > 0 &&
       length(rule.statement[0].and_statement[0].statement[0].not_statement[0].statement[0].byte_match_statement) > 0 &&
       length(rule.statement[0].and_statement[0].statement[0].not_statement[0].statement[0].byte_match_statement[0].field_to_match) > 0 &&
-      rule.statement[0].and_statement[0].statement[0].not_statement[0].statement[0].byte_match_statement[0].field_to_match[0].uri_path != null
+      length(rule.statement[0].and_statement[0].statement[0].not_statement[0].statement[0].byte_match_statement[0].field_to_match[0].uri_path) > 0
     ])
     error_message = "NOT statement should match on uri_path"
   }
@@ -192,7 +192,7 @@ run "test_example_and_statement" {
       length(rule.statement[0].and_statement[0].statement) >= 2 &&
       length(rule.statement[0].and_statement[0].statement[1].byte_match_statement) > 0 &&
       length(rule.statement[0].and_statement[0].statement[1].byte_match_statement[0].field_to_match) > 0 &&
-      rule.statement[0].and_statement[0].statement[1].byte_match_statement[0].field_to_match[0].uri_path != null
+      length(rule.statement[0].and_statement[0].statement[1].byte_match_statement[0].field_to_match[0].uri_path) > 0
     ])
     error_message = "Direct byte match statement should match on uri_path"
   }
@@ -1019,7 +1019,7 @@ run "test_and_statement_with_regex_match_statements" {
       length(rule.statement[0].and_statement[0].statement) >= 1 &&
       length(rule.statement[0].and_statement[0].statement[0].regex_match_statement) > 0 &&
       length(rule.statement[0].and_statement[0].statement[0].regex_match_statement[0].field_to_match) > 0 &&
-      rule.statement[0].and_statement[0].statement[0].regex_match_statement[0].field_to_match[0].uri_path != null
+      length(rule.statement[0].and_statement[0].statement[0].regex_match_statement[0].field_to_match[0].uri_path) > 0
     ])
     error_message = "First statement should match on uri_path"
   }

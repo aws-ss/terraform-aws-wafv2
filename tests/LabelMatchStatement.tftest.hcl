@@ -50,7 +50,7 @@ run "basic_label_match_statement" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].label_match_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].label_match_statement) > 0
     ])
     error_message = "Label match statement should be configured"
   }
@@ -59,7 +59,7 @@ run "basic_label_match_statement" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].label_match_statement != null &&
+      length(rule.statement[0].label_match_statement) > 0 &&
       rule.statement[0].label_match_statement[0].key == "awswaf:managed:aws:bot-control:signal:automated_browser"
     ])
     error_message = "Label key should match expected bot control signal"
@@ -69,7 +69,7 @@ run "basic_label_match_statement" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].label_match_statement != null &&
+      length(rule.statement[0].label_match_statement) > 0 &&
       rule.statement[0].label_match_statement[0].scope == "LABEL"
     ])
     error_message = "Label scope should be LABEL"
@@ -108,7 +108,7 @@ run "label_match_namespace_scope" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].label_match_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].label_match_statement) > 0
     ])
     error_message = "Label match statement should be configured"
   }
@@ -117,7 +117,7 @@ run "label_match_namespace_scope" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].label_match_statement != null &&
+      length(rule.statement[0].label_match_statement) > 0 &&
       rule.statement[0].label_match_statement[0].scope == "NAMESPACE"
     ])
     error_message = "Label scope should be NAMESPACE"
@@ -127,7 +127,7 @@ run "label_match_namespace_scope" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].label_match_statement != null &&
+      length(rule.statement[0].label_match_statement) > 0 &&
       strcontains(rule.statement[0].label_match_statement[0].key, "core-rule-set")
     ])
     error_message = "Should reference core rule set namespace"

@@ -126,7 +126,7 @@ run "test_example_managed_rule" {
       anytrue([
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "NoUserAgent_HEADER" && length(override.action_to_use) > 0 &&
-        override.action_to_use[0].captcha != null
+        length(override.action_to_use[0].captcha) > 0
       ])
     ])
     error_message = "NoUserAgent_HEADER should be overridden with captcha action"
@@ -141,7 +141,7 @@ run "test_example_managed_rule" {
       anytrue([
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "UserAgent_BadBots_HEADER" && length(override.action_to_use) > 0 &&
-        override.action_to_use[0].captcha != null
+        length(override.action_to_use[0].captcha) > 0
       ])
     ])
     error_message = "UserAgent_BadBots_HEADER should be overridden with captcha action"
@@ -325,7 +325,7 @@ run "test_managed_rule_with_block_overrides" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.override_action) > 0 && rule.override_action[0].none != null
+      length(rule.override_action) > 0 && length(rule.override_action[0].none) > 0
     ])
     error_message = "Rule should have none override action configured"
   }
@@ -338,7 +338,7 @@ run "test_managed_rule_with_block_overrides" {
       anytrue([
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "SQLiExtendedPatterns_QUERYARGUMENTS" && length(override.action_to_use) > 0 &&
-        override.action_to_use[0].block != null
+        length(override.action_to_use[0].block) > 0
       ])
     ])
     error_message = "SQLiExtendedPatterns_QUERYARGUMENTS should be overridden with block action"
@@ -612,7 +612,7 @@ run "test_managed_rule_multiple_action_overrides" {
       anytrue([
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "NoUserAgent_HEADER" && length(override.action_to_use) > 0 &&
-        override.action_to_use[0].allow != null
+        length(override.action_to_use[0].allow) > 0
       ])
     ])
     error_message = "NoUserAgent_HEADER should be overridden with allow action"
@@ -626,7 +626,7 @@ run "test_managed_rule_multiple_action_overrides" {
       anytrue([
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "SizeRestrictions_BODY" && length(override.action_to_use) > 0 &&
-        override.action_to_use[0].challenge != null
+        length(override.action_to_use[0].challenge) > 0
       ])
     ])
     error_message = "SizeRestrictions_BODY should be overridden with challenge action"
@@ -1128,7 +1128,7 @@ run "test_managed_rule_with_custom_response" {
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "NoUserAgent_HEADER" &&
         length(override.action_to_use) > 0 &&
-        override.action_to_use[0].block != null
+        length(override.action_to_use[0].block) > 0
       ])
     ])
     error_message = "NoUserAgent_HEADER should be overridden with block action"

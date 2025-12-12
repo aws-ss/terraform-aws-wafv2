@@ -54,7 +54,7 @@ run "basic_asn_match_statement" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].asn_match_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].asn_match_statement) > 0
     ])
     error_message = "ASN match statement should be configured"
   }
@@ -63,7 +63,7 @@ run "basic_asn_match_statement" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       toset(rule.statement[0].asn_match_statement[0].asn_list) == toset([12345, 12346])
     ])
     error_message = "ASN list should match expected values"
@@ -73,7 +73,7 @@ run "basic_asn_match_statement" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) > 0 &&
       rule.statement[0].asn_match_statement[0].forwarded_ip_config[0].fallback_behavior == "NO_MATCH"
     ])
@@ -84,7 +84,7 @@ run "basic_asn_match_statement" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) > 0 &&
       rule.statement[0].asn_match_statement[0].forwarded_ip_config[0].header_name == "X-Forwarded-For"
     ])
@@ -123,7 +123,7 @@ run "asn_match_without_forwarded_ip_config" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].asn_match_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].asn_match_statement) > 0
     ])
     error_message = "ASN match statement should be configured"
   }
@@ -132,7 +132,7 @@ run "asn_match_without_forwarded_ip_config" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       toset(rule.statement[0].asn_match_statement[0].asn_list) == toset([54321, 98765])
     ])
     error_message = "ASN list should match expected values"
@@ -142,7 +142,7 @@ run "asn_match_without_forwarded_ip_config" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) == 0
     ])
     error_message = "Forwarded IP config should not be present when not specified"
@@ -188,7 +188,7 @@ run "asn_match_with_match_fallback_behavior" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) > 0 &&
       rule.statement[0].asn_match_statement[0].forwarded_ip_config[0].fallback_behavior == "MATCH"
     ])
@@ -199,7 +199,7 @@ run "asn_match_with_match_fallback_behavior" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) > 0 &&
       rule.statement[0].asn_match_statement[0].forwarded_ip_config[0].header_name == "X-Real-IP"
     ])
@@ -218,7 +218,7 @@ run "asn_match_with_match_fallback_behavior" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       contains(rule.statement[0].asn_match_statement[0].asn_list, 16509)
     ])
     error_message = "ASN list should contain AWS ASN 16509"
@@ -228,7 +228,7 @@ run "asn_match_with_match_fallback_behavior" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       contains(rule.statement[0].asn_match_statement[0].asn_list, 13335)
     ])
     error_message = "ASN list should contain Cloudflare ASN 13335"
@@ -264,7 +264,7 @@ run "asn_match_single_asn_with_captcha_action" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].asn_list) == 1
     ])
     error_message = "ASN list should contain exactly one ASN"
@@ -274,7 +274,7 @@ run "asn_match_single_asn_with_captcha_action" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       rule.statement[0].asn_match_statement[0].asn_list[0] == 12345
     ])
     error_message = "Single ASN should be 12345"
@@ -292,7 +292,7 @@ run "asn_match_single_asn_with_captcha_action" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) > 0 &&
       rule.statement[0].asn_match_statement[0].forwarded_ip_config[0].header_name == "CF-Connecting-IP"
     ])
@@ -365,7 +365,7 @@ run "asn_match_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "BlockSuspiciousASNs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].asn_list) == 3
     ])
     error_message = "First rule should have 3 ASNs"
@@ -376,7 +376,7 @@ run "asn_match_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "AllowTrustedASNs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].asn_list) == 2
     ])
     error_message = "Second rule should have 2 ASNs"
@@ -387,7 +387,7 @@ run "asn_match_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "BlockSuspiciousASNs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) == 0
     ])
     error_message = "First rule should not have forwarded IP config"
@@ -398,7 +398,7 @@ run "asn_match_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "AllowTrustedASNs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].asn_match_statement != null &&
+      length(rule.statement[0].asn_match_statement) > 0 &&
       length(rule.statement[0].asn_match_statement[0].forwarded_ip_config) == 1
     ])
     error_message = "Second rule should have forwarded IP config"

@@ -49,7 +49,7 @@ run "basic_ip_set_reference_statement" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].ip_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].ip_set_reference_statement) > 0
     ])
     error_message = "IP set reference statement should be configured"
   }
@@ -58,7 +58,7 @@ run "basic_ip_set_reference_statement" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].arn == "arn:aws:wafv2:us-east-1:123456789012:regional/ipset/example-ip-set/12345678-1234-1234-1234-123456789012"
     ])
     error_message = "IP set ARN should match expected value"
@@ -68,7 +68,7 @@ run "basic_ip_set_reference_statement" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) == 0
     ])
     error_message = "Should not have forwarded IP config when not specified"
@@ -111,7 +111,7 @@ run "ip_set_reference_with_forwarded_ip_config" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.statement) > 0 && rule.statement[0].ip_set_reference_statement != null
+      length(rule.statement) > 0 && length(rule.statement[0].ip_set_reference_statement) > 0
     ])
     error_message = "IP set reference statement should be configured"
   }
@@ -120,7 +120,7 @@ run "ip_set_reference_with_forwarded_ip_config" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].fallback_behavior == "NO_MATCH"
     ])
@@ -131,7 +131,7 @@ run "ip_set_reference_with_forwarded_ip_config" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].header_name == "X-Forwarded-For"
     ])
@@ -142,7 +142,7 @@ run "ip_set_reference_with_forwarded_ip_config" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].position == "FIRST"
     ])
@@ -181,7 +181,7 @@ run "ip_set_reference_with_match_fallback_and_last_position" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].fallback_behavior == "MATCH"
     ])
@@ -192,7 +192,7 @@ run "ip_set_reference_with_match_fallback_and_last_position" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].header_name == "X-Real-IP"
     ])
@@ -203,7 +203,7 @@ run "ip_set_reference_with_match_fallback_and_last_position" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].position == "LAST"
     ])
@@ -267,7 +267,7 @@ run "ip_set_reference_with_captcha_action_cloudflare_header" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].header_name == "CF-Connecting-IP"
     ])
@@ -278,7 +278,7 @@ run "ip_set_reference_with_captcha_action_cloudflare_header" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) > 0 &&
       rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config[0].position == "ANY"
     ])
@@ -351,7 +351,7 @@ run "ip_set_reference_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "BlockMaliciousIPs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       strcontains(rule.statement[0].ip_set_reference_statement[0].arn, "malicious-ips")
     ])
     error_message = "First rule should reference malicious IPs set"
@@ -362,7 +362,7 @@ run "ip_set_reference_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "CountTrustedIPs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       strcontains(rule.statement[0].ip_set_reference_statement[0].arn, "trusted-partners")
     ])
     error_message = "Second rule should reference trusted partners IP set"
@@ -373,7 +373,7 @@ run "ip_set_reference_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "BlockMaliciousIPs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) == 0
     ])
     error_message = "First rule should not have forwarded IP config"
@@ -384,7 +384,7 @@ run "ip_set_reference_multiple_rules_different_actions" {
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "CountTrustedIPs" &&
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       length(rule.statement[0].ip_set_reference_statement[0].ip_set_forwarded_ip_config) == 1
     ])
     error_message = "Second rule should have forwarded IP config"
@@ -424,7 +424,7 @@ run "ip_set_reference_cloudfront_scope_global_arn" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       strcontains(rule.statement[0].ip_set_reference_statement[0].arn, ":us-east-1:123456789012:global/")
     ])
     error_message = "Should reference global IP set for CloudFront scope"
@@ -434,7 +434,7 @@ run "ip_set_reference_cloudfront_scope_global_arn" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
-      rule.statement[0].ip_set_reference_statement != null &&
+      length(rule.statement[0].ip_set_reference_statement) > 0 &&
       strcontains(rule.statement[0].ip_set_reference_statement[0].arn, "cdn-bypass-ips")
     ])
     error_message = "Should reference CDN bypass IPs set"
