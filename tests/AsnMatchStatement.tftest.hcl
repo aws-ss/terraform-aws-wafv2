@@ -151,7 +151,7 @@ run "asn_match_without_forwarded_ip_config" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].block != null
+      length(rule.action) > 0 && length(rule.action[0].block) > 0
     ])
     error_message = "Rule action should be block"
   }
@@ -209,7 +209,7 @@ run "asn_match_with_match_fallback_behavior" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].allow != null
+      length(rule.action) > 0 && length(rule.action[0].allow) > 0
     ])
     error_message = "Rule action should be allow"
   }
@@ -283,7 +283,7 @@ run "asn_match_single_asn_with_captcha_action" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].captcha != null
+      length(rule.action) > 0 && length(rule.action[0].captcha) > 0
     ])
     error_message = "Rule action should be captcha"
   }
@@ -347,7 +347,7 @@ run "asn_match_multiple_rules_different_actions" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      rule.name == "BlockSuspiciousASNs" && length(rule.action) > 0 && rule.action[0].block != null
+      rule.name == "BlockSuspiciousASNs" && length(rule.action) > 0 && length(rule.action[0].block) > 0
     ])
     error_message = "First rule action should be block"
   }
@@ -355,7 +355,7 @@ run "asn_match_multiple_rules_different_actions" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      rule.name == "AllowTrustedASNs" && length(rule.action) > 0 && rule.action[0].count != null
+      rule.name == "AllowTrustedASNs" && length(rule.action) > 0 && length(rule.action[0].count) > 0
     ])
     error_message = "Second rule action should be count"
   }

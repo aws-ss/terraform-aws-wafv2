@@ -254,7 +254,7 @@ run "test_regex_pattern_set_request_body" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      rule.action != null && length(rule.action) > 0 && rule.action[0].count != null
+      rule.action != null && length(rule.action) > 0 && length(rule.action[0].count) > 0
     ])
     error_message = "Rule action should be count for monitoring"
   }

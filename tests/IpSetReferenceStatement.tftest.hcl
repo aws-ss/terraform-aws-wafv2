@@ -213,7 +213,7 @@ run "ip_set_reference_with_match_fallback_and_last_position" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].allow != null
+      length(rule.action) > 0 && length(rule.action[0].allow) > 0
     ])
     error_message = "Rule action should be allow"
   }
@@ -258,7 +258,7 @@ run "ip_set_reference_with_captcha_action_cloudflare_header" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].captcha != null
+      length(rule.action) > 0 && length(rule.action[0].captcha) > 0
     ])
     error_message = "Rule action should be captcha"
   }
@@ -333,7 +333,7 @@ run "ip_set_reference_multiple_rules_different_actions" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      rule.name == "BlockMaliciousIPs" && length(rule.action) > 0 && rule.action[0].block != null
+      rule.name == "BlockMaliciousIPs" && length(rule.action) > 0 && length(rule.action[0].block) > 0
     ])
     error_message = "First rule action should be block"
   }
@@ -341,7 +341,7 @@ run "ip_set_reference_multiple_rules_different_actions" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      rule.name == "CountTrustedIPs" && length(rule.action) > 0 && rule.action[0].count != null
+      rule.name == "CountTrustedIPs" && length(rule.action) > 0 && length(rule.action[0].count) > 0
     ])
     error_message = "Second rule action should be count"
   }

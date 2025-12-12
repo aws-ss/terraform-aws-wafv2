@@ -74,7 +74,7 @@ run "test_example_managed_rule" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.override_action) > 0 && rule.override_action[0].count != null
+      length(rule.override_action) > 0 && length(rule.override_action[0].count) > 0
     ])
     error_message = "Rule should have count override action configured"
   }
@@ -477,7 +477,7 @@ run "test_managed_rule_with_label_scope_down" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].challenge != null
+      length(rule.action) > 0 && length(rule.action[0].challenge) > 0
     ])
     error_message = "Rule should have challenge action configured"
   }
@@ -547,7 +547,7 @@ run "test_managed_rule_with_byte_match_scope_down" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].captcha != null
+      length(rule.action) > 0 && length(rule.action[0].captcha) > 0
     ])
     error_message = "Rule should have captcha action configured"
   }
@@ -930,7 +930,7 @@ run "test_managed_rule_with_bot_control_configs" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].allow != null
+      length(rule.action) > 0 && length(rule.action[0].allow) > 0
     ])
     error_message = "Rule should have allow action configured"
   }

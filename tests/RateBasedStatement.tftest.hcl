@@ -197,7 +197,7 @@ run "rate_based_statement_constant_with_scope_down" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].captcha != null
+      length(rule.action) > 0 && length(rule.action[0].captcha) > 0
     ])
     error_message = "Rule action should be captcha"
   }
@@ -345,7 +345,7 @@ run "rate_based_statement_custom_keys_simple" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].block != null
+      length(rule.action) > 0 && length(rule.action[0].block) > 0
     ])
     error_message = "Rule action should be block"
   }
@@ -405,7 +405,7 @@ run "rate_based_statement_multiple_rules_different_types" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "RateLimit_IP" &&
-      length(rule.action) > 0 && rule.action[0].block != null
+      length(rule.action) > 0 && length(rule.action[0].block) > 0
     ])
     error_message = "First rule action should be block"
   }
@@ -414,7 +414,7 @@ run "rate_based_statement_multiple_rules_different_types" {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
       rule.name == "RateLimit_ForwardedIP" &&
-      length(rule.action) > 0 && rule.action[0].captcha != null
+      length(rule.action) > 0 && length(rule.action[0].captcha) > 0
     ])
     error_message = "Second rule action should be captcha"
   }
@@ -564,7 +564,7 @@ run "rate_based_statement_with_comprehensive_custom_keys" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].count != null
+      length(rule.action) > 0 && length(rule.action[0].count) > 0
     ])
     error_message = "Rule action should be count"
   }

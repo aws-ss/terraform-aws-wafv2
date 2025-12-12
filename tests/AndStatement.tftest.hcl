@@ -82,7 +82,7 @@ run "test_example_and_statement" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].count != null
+      length(rule.action) > 0 && length(rule.action[0].count) > 0
     ])
     error_message = "Rule should have count action configured"
   }
@@ -322,7 +322,7 @@ run "test_and_statement_with_byte_match_statements" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].block != null
+      length(rule.action) > 0 && length(rule.action[0].block) > 0
     ])
     error_message = "Rule should have block action configured"
   }
@@ -468,7 +468,7 @@ run "test_and_statement_with_ip_set_reference_statements" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].allow != null
+      length(rule.action) > 0 && length(rule.action[0].allow) > 0
     ])
     error_message = "Rule should have allow action configured"
   }
@@ -840,7 +840,7 @@ run "test_and_statement_with_regex_pattern_set_statements" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].captcha != null
+      length(rule.action) > 0 && length(rule.action[0].captcha) > 0
     ])
     error_message = "Rule should have captcha action configured"
   }
@@ -918,7 +918,7 @@ run "test_and_statement_with_label_match_statements" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].count != null
+      length(rule.action) > 0 && length(rule.action[0].count) > 0
     ])
     error_message = "Rule should have count action configured"
   }
@@ -1040,7 +1040,7 @@ run "test_and_statement_with_regex_match_statements" {
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
-      length(rule.action) > 0 && rule.action[0].captcha != null
+      length(rule.action) > 0 && length(rule.action[0].captcha) > 0
     ])
     error_message = "Rule should have captcha action configured"
   }
