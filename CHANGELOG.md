@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.0.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.13.0...v4.0.0) (2025-12-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump minimum terraform version
+* adding support for new custom_response functionality
+* adding a type for rule input
+
+### Bug Fixes
+
+* adding support for new custom_response functionality ([381c39b](https://github.com/aws-ss/terraform-aws-wafv2/commit/381c39bd8d84cc6e9204e9c7b5d31b0b1aa75bdd))
+* **tests:** action tests ([4691216](https://github.com/aws-ss/terraform-aws-wafv2/commit/4691216548d7365eec198d79149c258aa891b66b))
+* **tests:** null tests for rule sets are bad ([a315de6](https://github.com/aws-ss/terraform-aws-wafv2/commit/a315de6c429a2c2074c62b8f00c8c6ca64709d1d))
+
+
+### Code Refactoring
+
+* adding a type for rule input ([cb75294](https://github.com/aws-ss/terraform-aws-wafv2/commit/cb75294072450083e219866f10814431b3f11036))
+
+
+### Miscellaneous Chores
+
+* bump minimum terraform version ([49698c2](https://github.com/aws-ss/terraform-aws-wafv2/commit/49698c2906264b54cbc68a8f9166eafa2ef6e1b3))
+
 ## [3.13.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.12.1...v3.13.0) (2025-10-23)
 
 
