@@ -33,6 +33,15 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 
 - See [Example Codes](https://github.com/aws-ss/terraform-aws-wafv2/tree/main/examples) for full details.
 
+## Tests
+
+This module has unit tests.
+To run them, do:
+
+```shell
+terraform test
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

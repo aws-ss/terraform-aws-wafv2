@@ -24,10 +24,10 @@ variable "default_custom_response" {
   type = object({
     response_code            = optional(number, 403)
     custom_response_body_key = optional(string)
-    response_header          = optional(list(object({
+    response_header = optional(list(object({
       name  = string
       value = string
-    })))
+    })), [])
   })
   default = null
 }
@@ -74,6 +74,7 @@ variable "token_domains" {
 variable "rule" {
   description = "(Optional) Rule blocks used to identify the web requests that you want to allow, block, or count."
   type        = any
+  default     = []
 }
 
 variable "tags" {
