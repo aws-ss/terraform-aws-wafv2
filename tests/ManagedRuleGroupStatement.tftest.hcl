@@ -1084,6 +1084,10 @@ run "test_managed_rule_with_custom_response" {
                 response_code            = 403
                 custom_response_body_key = "CustomResponseBody2"
               }
+            },
+            {
+              name          = "SizeRestrictions_BODY"
+              action_to_use = "captcha"
             }
           ]
         }
@@ -1114,9 +1118,9 @@ run "test_managed_rule_with_custom_response" {
       for rule in aws_wafv2_web_acl.this.rule :
       length(rule.statement) > 0 &&
       length(rule.statement[0].managed_rule_group_statement) > 0 &&
-      length(rule.statement[0].managed_rule_group_statement[0].rule_action_override) == 2
+      length(rule.statement[0].managed_rule_group_statement[0].rule_action_override) == 3
     ])
-    error_message = "Should have two rule action overrides configured"
+    error_message = "Should have three rule action overrides configured"
   }
 
   assert {
@@ -1134,6 +1138,10 @@ run "test_managed_rule_with_custom_response" {
     error_message = "NoUserAgent_HEADER should be overridden with block action"
   }
 
+  # Note: The following assertions use ternary operators (condition ? value : false)
+  # because Terraform doesn't short-circuit && operators. When iterating over
+  # rule_action_overrides that include non-block actions (e.g., captcha), we must
+  # prevent accessing block[0] when the block list is empty.
   assert {
     condition = anytrue([
       for rule in aws_wafv2_web_acl.this.rule :
@@ -1143,8 +1151,9 @@ run "test_managed_rule_with_custom_response" {
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "NoUserAgent_HEADER" &&
         length(override.action_to_use) > 0 &&
-        length(override.action_to_use[0].block) > 0 &&
-        length(override.action_to_use[0].block[0].custom_response) > 0
+        length(override.action_to_use[0].block) > 0 ? (
+          length(override.action_to_use[0].block[0].custom_response) > 0
+        ) : false
       ])
     ])
     error_message = "NoUserAgent_HEADER should have custom response configured"
@@ -1159,9 +1168,10 @@ run "test_managed_rule_with_custom_response" {
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "NoUserAgent_HEADER" &&
         length(override.action_to_use) > 0 &&
-        length(override.action_to_use[0].block) > 0 &&
-        length(override.action_to_use[0].block[0].custom_response) > 0 &&
-        override.action_to_use[0].block[0].custom_response[0].response_code == 400
+        length(override.action_to_use[0].block) > 0 ? (
+          length(override.action_to_use[0].block[0].custom_response) > 0 &&
+          override.action_to_use[0].block[0].custom_response[0].response_code == 400
+        ) : false
       ])
     ])
     error_message = "Should have response code 400 for NoUserAgent_HEADER custom response"
@@ -1176,9 +1186,10 @@ run "test_managed_rule_with_custom_response" {
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "NoUserAgent_HEADER" &&
         length(override.action_to_use) > 0 &&
-        length(override.action_to_use[0].block) > 0 &&
-        length(override.action_to_use[0].block[0].custom_response) > 0 &&
-        override.action_to_use[0].block[0].custom_response[0].custom_response_body_key == "CustomResponseBody1"
+        length(override.action_to_use[0].block) > 0 ? (
+          length(override.action_to_use[0].block[0].custom_response) > 0 &&
+          override.action_to_use[0].block[0].custom_response[0].custom_response_body_key == "CustomResponseBody1"
+        ) : false
       ])
     ])
     error_message = "Should reference CustomResponseBody1 for NoUserAgent_HEADER custom response"
@@ -1193,9 +1204,10 @@ run "test_managed_rule_with_custom_response" {
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "NoUserAgent_HEADER" &&
         length(override.action_to_use) > 0 &&
-        length(override.action_to_use[0].block) > 0 &&
-        length(override.action_to_use[0].block[0].custom_response) > 0 &&
-        length(override.action_to_use[0].block[0].custom_response[0].response_header) == 2
+        length(override.action_to_use[0].block) > 0 ? (
+          length(override.action_to_use[0].block[0].custom_response) > 0 &&
+          length(override.action_to_use[0].block[0].custom_response[0].response_header) == 2
+        ) : false
       ])
     ])
     error_message = "Should have two response headers for NoUserAgent_HEADER custom response"
@@ -1210,9 +1222,10 @@ run "test_managed_rule_with_custom_response" {
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "UserAgent_BadBots_HEADER" &&
         length(override.action_to_use) > 0 &&
-        length(override.action_to_use[0].block) > 0 &&
-        length(override.action_to_use[0].block[0].custom_response) > 0 &&
-        override.action_to_use[0].block[0].custom_response[0].response_code == 403
+        length(override.action_to_use[0].block) > 0 ? (
+          length(override.action_to_use[0].block[0].custom_response) > 0 &&
+          override.action_to_use[0].block[0].custom_response[0].response_code == 403
+        ) : false
       ])
     ])
     error_message = "Should have response code 403 for UserAgent_BadBots_HEADER custom response"
@@ -1227,12 +1240,44 @@ run "test_managed_rule_with_custom_response" {
         for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
         override.name == "UserAgent_BadBots_HEADER" &&
         length(override.action_to_use) > 0 &&
-        length(override.action_to_use[0].block) > 0 &&
-        length(override.action_to_use[0].block[0].custom_response) > 0 &&
-        override.action_to_use[0].block[0].custom_response[0].custom_response_body_key == "CustomResponseBody2"
+        length(override.action_to_use[0].block) > 0 ? (
+          length(override.action_to_use[0].block[0].custom_response) > 0 &&
+          override.action_to_use[0].block[0].custom_response[0].custom_response_body_key == "CustomResponseBody2"
+        ) : false
       ])
     ])
     error_message = "Should reference CustomResponseBody2 for UserAgent_BadBots_HEADER custom response"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "SizeRestrictions_BODY" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].captcha) > 0
+      ])
+    ])
+    error_message = "SizeRestrictions_BODY should be overridden with captcha action"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      anytrue([
+        for override in rule.statement[0].managed_rule_group_statement[0].rule_action_override :
+        override.name == "SizeRestrictions_BODY" &&
+        length(override.action_to_use) > 0 &&
+        length(override.action_to_use[0].captcha) > 0 &&
+        length(override.action_to_use[0].block) == 0
+      ])
+    ])
+    error_message = "SizeRestrictions_BODY should not have block action (no custom_response needed for captcha)"
   }
 }
 

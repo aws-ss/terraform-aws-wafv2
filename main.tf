@@ -270,7 +270,7 @@ resource "aws_wafv2_web_acl" "this" {
             }
 
             dynamic "rule_action_override" {
-              for_each = lookup(managed_rule_group_statement.value, "rule_action_override", null) == null ? [] : lookup(managed_rule_group_statement.value, "rule_action_override")
+              for_each = lookup(managed_rule_group_statement.value, "rule_action_override", [])
               content {
                 name = lookup(rule_action_override.value, "name")
 
