@@ -37,14 +37,31 @@ module "wafv2" {
                 },
                 {
                   name  = "X-Custom-Response-Header02"
-                  value = "Not authorized"
+                  value = "Access denied"
                 }
               ]
             }
           },
           {
             name          = "UserAgent_BadBots_HEADER"
-            action_to_use = "captcha"
+            action_to_use = "block"
+            custom_response = {
+              response_code            = 403
+              custom_response_body_key = "CustomResponseBody1"
+              response_header          = []
+            }
+          },
+          {
+            name          = "SizeRestrictions_BODY"
+            action_to_use = "count"
+            # Note: custom_response is included here for Terraform type consistency
+            # even though it won't be used for count actions. All rule_action_override
+            # elements must have the same structure.
+            custom_response = {
+              response_code            = 403
+              custom_response_body_key = null
+              response_header          = []
+            }
           }
         ]
 
