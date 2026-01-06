@@ -569,3 +569,308 @@ run "rate_based_statement_with_comprehensive_custom_keys" {
     error_message = "Rule action should be count"
   }
 }
+
+run "rate_based_statement_with_not_statement_in_scope_down" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name     = "RateBasedNotStatementRule"
+        priority = 30
+        action   = "block"
+        rate_based_statement = {
+          limit                 = 1000
+          aggregate_key_type    = "IP"
+          evaluation_window_sec = 300
+
+          scope_down_statement = {
+            not_statement = {
+              geo_match_statement = {
+                country_codes = ["US", "CA"]
+              }
+            }
+          }
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "RateBasedNotStatementRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.rule) == 1
+    error_message = "Should have one rule with not statement in scope down"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0
+    ])
+    error_message = "Should have scope down statement configured"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement) > 0
+    ])
+    error_message = "Should have not statement in scope down configuration"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement) > 0
+    ])
+    error_message = "Should have geo match statement inside not statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement) > 0 &&
+      contains(rule.statement[0].rate_based_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement[0].country_codes, "US")
+    ])
+    error_message = "Should include US in country codes for not statement geo matching"
+  }
+}
+
+run "rate_based_statement_with_not_statement_in_and_statement" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name     = "RateBasedNotInAndRule"
+        priority = 31
+        action   = "block"
+        rate_based_statement = {
+          limit                 = 500
+          aggregate_key_type    = "IP"
+          evaluation_window_sec = 120
+
+          scope_down_statement = {
+            and_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    positional_constraint = "CONTAINS"
+                    search_string         = "api"
+                    field_to_match = {
+                      uri_path = {}
+                    }
+                    text_transformation = [
+                      {
+                        priority = 0
+                        type     = "LOWERCASE"
+                      }
+                    ]
+                  }
+                },
+                {
+                  not_statement = {
+                    geo_match_statement = {
+                      country_codes = ["GB", "FR"]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "RateBasedNotInAndRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.rule) == 1
+    error_message = "Should have one rule with not statement nested in and statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement) > 0
+    ])
+    error_message = "Should have and statement in scope down configuration"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement[0].statement) == 2
+    ])
+    error_message = "And statement should have two nested statements"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement[0].statement) > 1 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement) > 0
+    ])
+    error_message = "Second statement in and should be not statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement[0].statement) > 1 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement[0].statement[0].geo_match_statement) > 0
+    ])
+    error_message = "Not statement should contain geo match statement"
+  }
+}
+
+run "rate_based_statement_with_not_statement_in_or_statement" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name     = "RateBasedNotInOrRule"
+        priority = 32
+        action   = "captcha"
+        rate_based_statement = {
+          limit                 = 300
+          aggregate_key_type    = "IP"
+          evaluation_window_sec = 60
+
+          scope_down_statement = {
+            or_statement = {
+              statements = [
+                {
+                  size_constraint_statement = {
+                    comparison_operator = "GT"
+                    size                = 5000
+                    field_to_match = {
+                      body = {
+                        oversize_handling = "CONTINUE"
+                      }
+                    }
+                    text_transformation = [
+                      {
+                        priority = 0
+                        type     = "NONE"
+                      }
+                    ]
+                  }
+                },
+                {
+                  not_statement = {
+                    ip_set_reference_statement = {
+                      arn = "arn:aws:wafv2:us-east-1:123456789012:regional/ipset/allowed-ips/654321"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "RateBasedNotInOrRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.rule) == 1
+    error_message = "Should have one rule with not statement nested in or statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement) > 0
+    ])
+    error_message = "Should have or statement in scope down configuration"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement[0].statement) == 2
+    ])
+    error_message = "Or statement should have two nested statements"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement[0].statement) > 1 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement) > 0
+    ])
+    error_message = "Second statement in or should be not statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].rate_based_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement[0].statement) > 1 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].rate_based_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement[0].statement[0].ip_set_reference_statement) > 0
+    ])
+    error_message = "Not statement should contain ip set reference statement"
+  }
+}
