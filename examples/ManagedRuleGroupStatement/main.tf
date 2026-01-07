@@ -37,13 +37,21 @@ module "wafv2" {
                 },
                 {
                   name  = "X-Custom-Response-Header02"
-                  value = "Not authorized"
+                  value = "Access Denied"
                 }
               ]
             }
           },
           {
             name          = "UserAgent_BadBots_HEADER"
+            action_to_use = "block"
+            custom_response = {
+              response_code            = 403
+              custom_response_body_key = "CustomResponseBody1"
+            }
+          },
+          {
+            name          = "SizeRestrictions_BODY"
             action_to_use = "captcha"
           }
         ]
