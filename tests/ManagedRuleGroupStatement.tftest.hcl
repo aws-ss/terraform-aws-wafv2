@@ -1296,3 +1296,407 @@ run "test_managed_rule_with_custom_response_minimal" {
     error_message = "Should have one rule action override configured"
   }
 }
+
+run "test_managed_rule_with_not_statement_in_scope_down" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name            = "NotStatementRule"
+        priority        = 25
+        override_action = "count"
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          scope_down_statement = {
+            not_statement = {
+              geo_match_statement = {
+                country_codes = ["US", "CA"]
+              }
+            }
+          }
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "NotStatementRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.rule) == 1
+    error_message = "Should have one rule with not statement in scope down"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0
+    ])
+    error_message = "Should have scope down statement configured"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement) > 0
+    ])
+    error_message = "Should have not statement in scope down configuration"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement) > 0
+    ])
+    error_message = "Should have geo match statement inside not statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement) > 0 &&
+      contains(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement[0].country_codes, "US")
+    ])
+    error_message = "Should include US in country codes for not statement geo matching"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement) > 0 &&
+      contains(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].not_statement[0].statement[0].geo_match_statement[0].country_codes, "CA")
+    ])
+    error_message = "Should include CA in country codes for not statement geo matching"
+  }
+}
+
+run "test_managed_rule_with_not_statement_in_and_statement" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name            = "NotInAndStatementRule"
+        priority        = 26
+        override_action = "count"
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          scope_down_statement = {
+            and_statement = {
+              statements = [
+                {
+                  byte_match_statement = {
+                    positional_constraint = "CONTAINS"
+                    search_string         = "bot"
+                    field_to_match = {
+                      single_header = {
+                        name = "user-agent"
+                      }
+                    }
+                    text_transformation = [
+                      {
+                        priority = 0
+                        type     = "LOWERCASE"
+                      }
+                    ]
+                  }
+                },
+                {
+                  not_statement = {
+                    geo_match_statement = {
+                      country_codes = ["GB", "FR"]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "NotInAndStatementRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.rule) == 1
+    error_message = "Should have one rule with not statement nested in and statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement) > 0
+    ])
+    error_message = "Should have and statement in scope down configuration"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement) == 2
+    ])
+    error_message = "And statement should have two nested statements"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[0].byte_match_statement) > 0
+    ])
+    error_message = "First statement in and should be byte match statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement) > 1 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement) > 0
+    ])
+    error_message = "Second statement in and should be not statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement) > 1 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement[0].statement[0].geo_match_statement) > 0
+    ])
+    error_message = "Not statement should contain geo match statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement) > 1 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement[0].statement[0].geo_match_statement) > 0 &&
+      contains(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[1].not_statement[0].statement[0].geo_match_statement[0].country_codes, "GB")
+    ])
+    error_message = "Geo match in not statement should include GB in country codes"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[0].byte_match_statement) > 0 &&
+      rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].and_statement[0].statement[0].byte_match_statement[0].search_string == "bot"
+    ])
+    error_message = "Byte match statement should search for 'bot'"
+  }
+}
+
+run "test_managed_rule_with_not_statement_in_or_statement" {
+  command = plan
+
+  variables {
+    rule = [
+      {
+        name            = "NotInOrStatementRule"
+        priority        = 27
+        override_action = "count"
+        managed_rule_group_statement = {
+          name        = "AWSManagedRulesCommonRuleSet"
+          vendor_name = "AWS"
+
+          scope_down_statement = {
+            or_statement = {
+              statements = [
+                {
+                  size_constraint_statement = {
+                    comparison_operator = "GT"
+                    size                = 8000
+                    field_to_match = {
+                      body = {
+                        oversize_handling = "CONTINUE"
+                      }
+                    }
+                    text_transformation = [
+                      {
+                        priority = 0
+                        type     = "NONE"
+                      }
+                    ]
+                  }
+                },
+                {
+                  not_statement = {
+                    ip_set_reference_statement = {
+                      arn = "arn:aws:wafv2:us-east-1:123456789012:regional/ipset/trusted-ips/123456"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        visibility_config = {
+          cloudwatch_metrics_enabled = true
+          metric_name                = "NotInOrStatementRule"
+          sampled_requests_enabled   = true
+        }
+      }
+    ]
+  }
+
+  assert {
+    condition     = length(aws_wafv2_web_acl.this.rule) == 1
+    error_message = "Should have one rule with not statement nested in or statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement) > 0
+    ])
+    error_message = "Should have or statement in scope down configuration"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement) == 2
+    ])
+    error_message = "Or statement should have two nested statements"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[0].size_constraint_statement) > 0
+    ])
+    error_message = "First statement in or should be size constraint statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement) > 1 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement) > 0
+    ])
+    error_message = "Second statement in or should be not statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement) > 1 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement[0].statement[0].ip_set_reference_statement) > 0
+    ])
+    error_message = "Not statement should contain ip set reference statement"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement) > 1 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement[0].statement[0].ip_set_reference_statement) > 0 &&
+      rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[1].not_statement[0].statement[0].ip_set_reference_statement[0].arn == "arn:aws:wafv2:us-east-1:123456789012:regional/ipset/trusted-ips/123456"
+    ])
+    error_message = "IP set reference in not statement should have correct ARN"
+  }
+
+  assert {
+    condition = anytrue([
+      for rule in aws_wafv2_web_acl.this.rule :
+      length(rule.statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement) > 0 &&
+      length(rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[0].size_constraint_statement) > 0 &&
+      rule.statement[0].managed_rule_group_statement[0].scope_down_statement[0].or_statement[0].statement[0].size_constraint_statement[0].size == 8000
+    ])
+    error_message = "Size constraint statement should check for size greater than 8000"
+  }
+}
