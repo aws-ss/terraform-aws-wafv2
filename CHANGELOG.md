@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [4.0.1](https://github.com/aws-ss/terraform-aws-wafv2/compare/v4.0.0...v4.0.1) (2026-01-07)
+
+
+### Bug Fixes
+
+* Inconsistent conditional result types ([5f0ebd5](https://github.com/aws-ss/terraform-aws-wafv2/commit/5f0ebd522be7a2f97959427e405b5ebe53721497))
+
 ## [4.0.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v3.13.0...v4.0.0) (2025-12-26)
 
 
