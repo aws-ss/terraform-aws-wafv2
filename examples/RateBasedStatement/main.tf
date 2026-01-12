@@ -47,16 +47,14 @@ module "wafv2" {
         evaluation_window_sec = 120
         scope_down_statement = {
           not_statement = {
-            statement = [{
-              geo_match_statement = {
-                country_codes : ["CN"]
-                forwarded_ip_config = {
-                  fallback_behavior = "MATCH"
-                  header_name       = "X-Forwarded-For"
-                }
+            geo_match_statement = {
+              country_codes : ["CN"]
+              forwarded_ip_config = {
+                fallback_behavior = "MATCH"
+                header_name       = "X-Forwarded-For"
               }
+            }
 
-            }]
           }
         }
       }
