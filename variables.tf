@@ -101,7 +101,7 @@ variable "enabled_logging_configuration" {
 }
 
 variable "log_destination_configs" {
-  type        = string
+  type        = list(string)
   description = "(Required) The Amazon Kinesis Data Firehose, Cloudwatch Log log group, or S3 bucket Amazon Resource Names (ARNs) that you want to associate with the web ACL."
   default     = null
 }

@@ -12364,7 +12364,7 @@ resource "aws_wafv2_web_acl_association" "this" {
 resource "aws_wafv2_web_acl_logging_configuration" "this" {
   count = var.enabled_logging_configuration ? 1 : 0
 
-  log_destination_configs = [var.log_destination_configs]
+  log_destination_configs = var.log_destination_configs
   resource_arn            = aws_wafv2_web_acl.this.arn
 
   dynamic "redacted_fields" {
