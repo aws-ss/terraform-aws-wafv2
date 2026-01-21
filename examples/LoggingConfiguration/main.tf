@@ -9,7 +9,7 @@ module "logging_configuration" {
   resource_arn                = []
 
   enabled_logging_configuration = true
-  log_destination_configs       = ""
+  log_destination_configs       = []
   redacted_fields = [
     {
       uri_path = {}
