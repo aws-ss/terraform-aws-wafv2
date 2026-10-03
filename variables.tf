@@ -83,6 +83,12 @@ variable "rule" {
   default     = []
 }
 
+variable "rule_json" {
+  description = "(Optional) Raw JSON string to allow more than three nested statements. Conflicts with rule attribute. This is for advanced use cases where more than 3 levels of nested statements are required."
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "(Optional) Map of key-value pairs to associate with the resource."
   type        = map(string)

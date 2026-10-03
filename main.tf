@@ -79,6 +79,8 @@ resource "aws_wafv2_web_acl" "this" {
     }
   }
 
+  rule_json = var.rule_json
+
   dynamic "rule" {
     for_each = var.rule
     content {

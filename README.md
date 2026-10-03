@@ -11,6 +11,7 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 - Create a WAFv2 Rule Group resource
 - Custom Response Body
 - Logging Configuration
+- Rule JSON
 - Statements
   - AndStatement
   - AsnMatchStatement
@@ -39,15 +40,15 @@ A Terraform module that creates Web Application Firewall (WAFV2).
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4.6 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.27.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.30.0 |
+| ---- | ------- |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 6.27.0 |
 
 ## Modules
 
@@ -56,7 +57,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_wafv2_web_acl.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl) | resource |
 | [aws_wafv2_web_acl_association.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_association) | resource |
 | [aws_wafv2_web_acl_logging_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/wafv2_web_acl_logging_configuration) | resource |
@@ -64,7 +65,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_association_config"></a> [association\_config](#input\_association\_config) | (Optional) Customizes the request body that your protected resource forward to AWS WAF for inspection. | `map(any)` | `null` | no |
 | <a name="input_captcha_config"></a> [captcha\_config](#input\_captcha\_config) | (Optional) The amount of time, in seconds, that a CAPTCHA or challenge timestamp is considered valid by AWS WAF. The default setting is 300. | `number` | `300` | no |
 | <a name="input_challenge_config"></a> [challenge\_config](#input\_challenge\_config) | (Optional) The amount of time, in seconds, that a CAPTCHA or challenge timestamp is considered valid by AWS WAF. The default setting is 300. | `number` | `300` | no |
@@ -81,6 +82,7 @@ No modules.
 | <a name="input_region"></a> [region](#input\_region) | (Optional) Region where this resource will be managed. Defaults to the Region set in the provider configuration. | `string` | `null` | no |
 | <a name="input_resource_arn"></a> [resource\_arn](#input\_resource\_arn) | (Required) The Amazon Resource Name (ARN) of the resource to associate with the web ACL. | `list(string)` | n/a | yes |
 | <a name="input_rule"></a> [rule](#input\_rule) | (Optional) Rule blocks used to identify the web requests that you want to allow, block, or count. | `any` | `[]` | no |
+| <a name="input_rule_json"></a> [rule\_json](#input\_rule\_json) | (Optional) Raw JSON string to allow more than three nested statements. Conflicts with rule attribute. This is for advanced use cases where more than 3 levels of nested statements are required. | `string` | `null` | no |
 | <a name="input_scope"></a> [scope](#input\_scope) | (Required) Specifies whether this is for an AWS CloudFront distribution or for a regional application | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | (Optional) Map of key-value pairs to associate with the resource. | `map(string)` | `null` | no |
 | <a name="input_token_domains"></a> [token\_domains](#input\_token\_domains) | (Optional) Specifies the domains that AWS WAF should accept in a web request token. This enables the use of tokens across multiple protected websites. When AWS WAF provides a token, it uses the domain of the AWS resource that the web ACL is protecting. If you don't specify a list of token domains, AWS WAF accepts tokens only for the domain of the protected resource. With a token domain list, AWS WAF accepts the resource's host domain plus all domains in the token domain list, including their prefixed subdomains. | `list(string)` | `[]` | no |
@@ -89,7 +91,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_aws_wafv2_arn"></a> [aws\_wafv2\_arn](#output\_aws\_wafv2\_arn) | The ARN of the WAF WebACL. |
 | <a name="output_aws_wafv2_capacity"></a> [aws\_wafv2\_capacity](#output\_aws\_wafv2\_capacity) | Web ACL capacity units (WCUs) currently being used by this web ACL. |
 | <a name="output_aws_wafv2_custom_response_body"></a> [aws\_wafv2\_custom\_response\_body](#output\_aws\_wafv2\_custom\_response\_body) | The custom response body configuration of the WAF WebACL. |
