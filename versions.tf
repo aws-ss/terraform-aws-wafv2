@@ -4,7 +4,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 6.1.0"
+      version = ">= 6.27.0"
     }
+  }
+
+  provider_meta "aws" {
+    user_agent = ["github.com/aws-ss/terraform-aws-wafv2"]
   }
 }
