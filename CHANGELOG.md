@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.4.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v4.3.0...v4.4.0) (2026-10-03)
+
+
+### Features
+
+* add rule_json variable to support deeply nested statements ([de60779](https://github.com/aws-ss/terraform-aws-wafv2/commit/de60779087ac81e1cdaa1b52ebaf38ad3515691a))
+
 ## [4.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v4.2.0...v4.3.0) (2026-10-03)
 
 
