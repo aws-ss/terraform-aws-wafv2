@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.3.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v4.2.0...v4.3.0) (2026-10-03)
+
+
+### Features
+
+* bump AWS provider minimum version to 6.27.0 and add provider_meta ([f491287](https://github.com/aws-ss/terraform-aws-wafv2/commit/f491287df3a5b75eee2bf9cc4e07ce32682a717a))
+
 ## [4.2.0](https://github.com/aws-ss/terraform-aws-wafv2/compare/v4.1.3...v4.2.0) (2026-05-07)
 
 
