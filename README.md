@@ -1,5 +1,3 @@
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/aws-ss/terraform-aws-wafv2?utm_source=oss&utm_medium=github&utm_campaign=aws-ss%2Fterraform-aws-wafv2&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
-
 # terraform-aws-wafv2
 
 A Terraform module that creates Web Application Firewall (WAFV2).
